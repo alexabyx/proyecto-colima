@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+
+	</head>
+	<body>
+		{% if mensaje %}
+		<p> {{mensaje}} </p><br>
+		{% endif %}
+		<form action="." method="POST">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Iniciar Sesion"/>
+		</form>
+	</body>
+<html>

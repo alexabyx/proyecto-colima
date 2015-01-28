@@ -27,7 +27,8 @@ ALLOWED_HOSTS = []
 
 #Rutas de nuestros templates
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'inicio/templates/'),
+    os.path.join(BASE_DIR, 'proyecto_colima/templates', ''),
+    os.path.join(BASE_DIR, 'inicio/templates', ''),
 )
 
 TEMPLATE_LOADERS = (

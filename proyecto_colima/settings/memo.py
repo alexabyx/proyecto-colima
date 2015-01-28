@@ -4,9 +4,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'so_factory',
-        'USER': '',
+        'USER': 'root',
         'PASSWORD': '',
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
         'init_command': 'SET storage_engine=INNODB',

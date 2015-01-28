@@ -80,19 +80,7 @@ WSGI_APPLICATION = 'proyecto_colima.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'so_factory',
-        'USER': 'user',
-        'PASSWORD': 'contrasenya',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-        'init_command': 'SET storage_engine=INNODB',
-        },
-    }
-}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

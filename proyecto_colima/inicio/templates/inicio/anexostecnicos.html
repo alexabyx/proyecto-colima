@@ -11,9 +11,18 @@
 			{% for anexo in anexostecnicos %}
 				<li>{{anexo.numero_oficio}}-{{anexo.tipo}}-{{anexo.nombre}} 
 					<a href="{% url 'inicio:editar-anexotecnico' anexo.id %}"><button>Editar</button></a>
-					<a href="{% url 'inicio:eliminar-anexotecnico' anexo.id %}"><button>Eliminar</button>
+					<a href="{% url 'inicio:eliminar-anexotecnico' anexo.id %}"><button>Eliminar</button></a>
 				</li>
 			{% endfor %}
 		</ul>
+
+    {% if anexostecnicos.has_previous %}
+            <a href="?page={{ anexostecnicos.previous_page_number }}">Anterior &nbsp;&nbsp;</a>
+    {% endif %}                                    
+    {% if anexostecnicos.has_next %}
+            <a href="?page={{ anexostecnicos.next_page_number }}">Siguiente</a>
+    {% endif %}
+
+	<h5> Página {{ anexostecnicos.number }} de {{ anexostecnicos.paginator.num_pages }}</h5>     
 </div>
 {% endblock %}

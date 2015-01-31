@@ -1,4 +1,5 @@
 #! -*- coding:utf-8 -*-
+# Create your views here.
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -22,7 +23,6 @@ from inicio.forms import (	AuthForm,
 							PersonalForm
 						  )
 
-# Create your views here.
 
 def registrar_proyecto(request):
 	form = RegistrarProyectoForm()
@@ -34,7 +34,8 @@ def registrar_factura(request):
 
 def registrar_anexostecnicos(request):
 	form = AnexosTecnicosForm()
-	return render(request, 'inicio/registrar_anexostecnicos.html', {'form': form}, context_instance=RequestContext(request))
+	anexostecnicos = AnexosTecnicos.objects.all().order_by('-fecha_creacion')
+	return render(request, 'inicio/registrar_anexostecnicos.html', {'form': form, 'anexostecnicos':anexostecnicos}, context_instance=RequestContext(request))
 
 def registrar_contratos(request):
 	form = ContratosForm()
@@ -70,7 +71,7 @@ def inicio(request):
 				usuario = authenticate(username = username, password=password)
 			except:
 				usuario = None
-			
+			print usuario
 			if usuario is not None:
 				if usuario.is_active:                        
 					login(request, usuario)

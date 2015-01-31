@@ -4,12 +4,16 @@
 
 {% block content %}
 <div id="content-main">
-		<button onclick="javascript:window.history.go(-1);">Atrás</button>
+		<!--	
 		<form action="." method="POST">{% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" value="Registrar"/>
 		</form>
+		-->
+		<ul>
+			{% for anexo in anexostecnicos %}
+				<li>{{anexo.numero_oficio}}-{{anexo.tipo}}-{{anexo.nombre}}</li>
+			{% endfor %}
+		</ul>
 </div>
-
-
 {% endblock %}

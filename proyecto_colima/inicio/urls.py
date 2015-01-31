@@ -10,5 +10,7 @@ urlpatterns = patterns('proyecto_colima.inicio',
     url(r'^$', inicio, name="login"),
     url(r'^administrar_usuarios/$', administrar_usuarios, name="administrar-usuarios"),
 
+    url(r'^registrar_proyecto/$', registrar_proyecto, name="registrar-proyecto")
+
     )
 

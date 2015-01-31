@@ -27,7 +27,7 @@ ALLOWED_HOSTS = []
 
 #Rutas de nuestros templates
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'proyecto_colima/templates', ''),
+    #os.path.join(BASE_DIR, 'proyecto_colima/templates', ''),
     os.path.join(BASE_DIR, 'inicio/templates', ''),
 )
 
@@ -84,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'so_factory',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'user',
+        'PASSWORD': 'contrasenya',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
@@ -113,5 +113,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+AUTH_PROFILE_MODULE = '.'
 TIEMPO_EXPIRACION_SESION = 14400

@@ -10,7 +10,17 @@ from django.conf import settings
 from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 
-from inicio.forms import AuthForm, RegistrarProyectoForm
+from inicio.forms import (	AuthForm, 
+							RegistrarProyectoForm, 
+							FacturasForm, 
+							AnexosTecnicosForm, 
+							ContratosForm, 
+							ConveniosForm, 
+							PropuestasForm, 
+							EmpresasForm, 
+							EntregablesForm, 
+							PersonalForm
+						  )
 
 # Create your views here.
 
@@ -18,7 +28,37 @@ def registrar_proyecto(request):
 	form = RegistrarProyectoForm()
 	return render(request, 'inicio/registrar_proyecto.html', {'form': form}, context_instance=RequestContext(request))
 
+def registrar_factura(request):
+	form = FacturasForm()
+	return render(request, 'inicio/registrar_factura.html', {'form': form}, context_instance=RequestContext(request))
 
+def registrar_anexostecnicos(request):
+	form = AnexosTecnicosForm()
+	return render(request, 'inicio/registrar_anexostecnicos.html', {'form': form}, context_instance=RequestContext(request))
+
+def registrar_contratos(request):
+	form = ContratosForm()
+	return render(request, 'inicio/registrar_contratos.html', {'form': form}, context_instance=RequestContext(request))
+
+def registrar_convenios(request):
+	form = ConveniosForm()
+	return render(request, 'inicio/registrar_convenios.html', {'form': form}, context_instance=RequestContext(request))
+
+def registrar_propuestas(request):
+	form = PropuestasForm()
+	return render(request, 'inicio/registrar_propuestas.html', {'form': form}, context_instance=RequestContext(request))
+
+def registrar_empresa(request):
+	form = EmpresasForm
+	return render(request, 'inicio/registrar_empresa.html', {'form': form}, context_instance=RequestContext(request))
+
+def registrar_entregable(request):
+	form = EntregablesForm()
+	return render(request, 'inicio/registrar_entregable.html', {'form': form}, context_instance=RequestContext(request))
+
+def registrar_personal(request):
+	form = PersonalForm()
+	return render(request, 'inicio/registrar_personal.html', {'form': form}, context_instance=RequestContext(request))
 
 def inicio(request):
 	if request.method == "POST":

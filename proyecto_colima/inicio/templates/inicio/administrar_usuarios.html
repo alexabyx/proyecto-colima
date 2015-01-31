@@ -1,29 +1,63 @@
-<!DOCTYPE html>
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
 
-<html>
-	<head>
 
-	</head>
-	<body>
-		<div>
-			<ul>
-				<li>
-					<a href="{% url 'inicio:registrar-proyecto' %}">
-					Proyectos
-					</a>
-				</li>
-				<li>Facturas</li>
-				<li>Anexos técnicos</li>
-				<li>Contratos</li>
-				<li>Convenios</li>
-				<li>Propuestas</li>
-				<li>Empresas</li>
-				<li>Entregables</li>
-				<li>Personal</li>
-				<li>Histórico</li>
-				<li>Homologación de docs</li>
-			</ul>
-		</div>
+{% block content %}
+<div id="content-main">
+	<ul>
+		<li>
+			<a href="{% url 'inicio:registrar-proyecto' %}">
+				Proyectos
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-factura' %}">
+				Facturas
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-anexostecnicos' %}">
+				Anexos técnicos
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-contratos' %}">
+				Contratos
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-convenios'%}">
+				Convenios
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-propuestas' %}">
+				Propuestas
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-empresa' %}">
+				Empresas
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-entregable' %}">
+				Entregables
+			</a>
+		</li>
+		<li>
+			<a href="{% url 'inicio:registrar-personal' %}">
+				Personal
+			</a>
+		</li>
+		<li>
+			Histórico
+		</li>
+		<li>
+			Homologación de docs
+		</li>
+	</ul>
+</div>
 
-	</body>
-<html>
+
+{% endblock %}

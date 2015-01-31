@@ -4,9 +4,13 @@
 
 {% block content %}
 <div id="content-main">
-		<form action="." method="POST">{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" value="Registrar"/>
-		</form>
+		{% if mensaje %}
+			<p>{{ mensaje }}</p>
+		{% else %}
+			<form action="." method="POST">{% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" value="Registrar"/>
+			</form>
+		{% endif %}
 </div>
 {% endblock %}

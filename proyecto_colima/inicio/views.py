@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-#from django.contrib.auth.decorators import logout_required
 
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.conf import settings
@@ -23,7 +22,7 @@ from inicio.forms import (	AuthForm,
 							EntregablesForm, 
 							PersonalForm
 						  )
-#from django.contrib.login.decorators
+
 from inicio.models import ( AnexosTecnicos,
 						  )
 
@@ -96,9 +95,6 @@ def registrar_personal(request):
 def inicio(request):
 	if request.method == "POST":
 		form = AuthForm(request.POST)
-		if request.user.is_authenticated:
-			mensaje="con sesion iniciada"
-			return HttpResponseRedirect('inicio')
 		if form.is_valid():
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
@@ -123,7 +119,6 @@ def inicio(request):
 	else:
 		form = AuthForm()
 	return render(request, 'inicio/login.html', {'form': form }, context_instance=RequestContext(request))
-
 
 @login_required(login_url="/inicio")
 def administrar_usuarios(request):

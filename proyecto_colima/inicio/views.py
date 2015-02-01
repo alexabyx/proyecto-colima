@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
+#from django.contrib.auth.decorators import logout_required
+
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.conf import settings
 from django.http import HttpResponseRedirect, Http404
@@ -22,7 +23,7 @@ from inicio.forms import (	AuthForm,
 							EntregablesForm, 
 							PersonalForm
 						  )
-
+#from django.contrib.login.decorators
 from inicio.models import ( AnexosTecnicos,
 						  )
 
@@ -36,54 +37,21 @@ def registrar_factura(request):
 
 #VIEWS PARA ANEXOS TECNICOS
 def anexostecnicos(request):
-	anexostecnicos_list = AnexosTecnicos.objects.all().order_by('-fecha_creacion')
-
-	paginator = Paginator(anexostecnicos_list, 10)
-	page = request.GET.get('page', 1)
-
-	try:
-		anexostecnicos = paginator.page(page)
-	except PageNotAnInteger:
-		anexostecnicos = paginator.page(1)
-	except EmptyPage:
-		anexostecnicos = paginator.page(paginator.num_pages)
-
-	return render(request, 'inicio/anexostecnicos.html', {'anexostecnicos':anexostecnicos}, context_instance=RequestContext(request))
+	form = AnexosTecnicosForm()
+	anexostecnicos = AnexosTecnicos.objects.all().order_by('-fecha_creacion')
+	return render(request, 'inicio/anexostecnicos.html', {'form': form, 'anexostecnicos':anexostecnicos}, context_instance=RequestContext(request))
 
 def agregar_anexotecnico(request):
-	if request.method == "POST":
-		form = AnexosTecnicosForm(request.POST, request.FILES)
-		if form.is_valid():
-			form.save()
-			mensaje = "Guardado"
-			return render(request, 'inicio/agregar_anexotecnico.html', {'mensaje': mensaje}, context_instance=RequestContext(request))
-	else:
-		form = AnexosTecnicosForm()
+	form = AnexosTecnicosForm()
 	return render(request, 'inicio/agregar_anexotecnico.html', {'form':form}, context_instance=RequestContext(request))
 
 def editar_anexotecnico(request, anexo_id):
-	if request.method == "POST":
-		form = AnexosTecnicosForm(request.POST)
-		if form.is_valid():
-			anexo = AnexosTecnicos.objects.get(id=anexo_id)
-			anexo.numero_oficio = form.cleaned_data['numero_oficio']
-			anexo.proyecto = form.cleaned_data['proyecto']
-			anexo.tipo = form.cleaned_data['tipo']
-			anexo.nombre = form.cleaned_data['nombre']
-			anexo.siglas = form.cleaned_data['siglas']
-			anexo.porcentaje = form.cleaned_data['porcentaje']
-			anexo.fecha_creacion = form.cleaned_data['fecha_creacion']
-			anexo.archivo = form.cleaned_data['archivo']
-			anexo.save()
-			mensaje = "Guardado"
-			return render(request, 'inicio/editar_anexotecnico.html', {'mensaje': mensaje}, context_instance=RequestContext(request))
-	else:					
-		try:
-			anexo = AnexosTecnicos.objects.get(id=anexo_id)
-		except:
-			anexo = None
+	try:
+		anexo = AnexosTecnicos.objects.get(id=anexo_id)
+	except:
+		anexo = None
 
-		form = AnexosTecnicosForm(instance=anexo)	
+	form = AnexosTecnicosForm(instance=anexo)	
 
 	return render(request, 'inicio/editar_anexotecnico.html', {'form': form}, context_instance=RequestContext(request))
 
@@ -128,6 +96,9 @@ def registrar_personal(request):
 def inicio(request):
 	if request.method == "POST":
 		form = AuthForm(request.POST)
+		if request.user.is_authenticated:
+			mensaje="con sesion iniciada"
+			return HttpResponseRedirect('inicio')
 		if form.is_valid():
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
@@ -152,6 +123,7 @@ def inicio(request):
 	else:
 		form = AuthForm()
 	return render(request, 'inicio/login.html', {'form': form }, context_instance=RequestContext(request))
+
 
 @login_required(login_url="/inicio")
 def administrar_usuarios(request):

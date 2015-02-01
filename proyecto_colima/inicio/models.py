@@ -47,7 +47,7 @@ class DetalleDocumentoResponsiva(models.Model):
 	archivo_documento_responsiva = models.FileField(upload_to = get_upload_path, blank=True)
 
 class Proyectos(models.Model):
-	mombre = models.CharField(max_length=45, null=False)
+	nombre = models.CharField(max_length=45, null=False)
 	siglas = models.CharField(max_length=45)
 	responsable = models.ManyToManyField(Personal)
 	fecha_inicio = models.DateField(default=datetime.datetime.now())

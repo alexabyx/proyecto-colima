@@ -1,14 +1,39 @@
+<!DOCTYPE html>
 {% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load staticfiles %}0
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap.min.js' %}"/>
+{% endblock %}
+<!--script type="text/javascript">
+	$("#id_nombre").addClass("")
+</script>
 {% load i18n admin_static %}
-
+-->
 
 {% block content %}
 <div id="content-main">
-		<button onclick="javascript:window.history.go(-1);">Atrás</button>
-		<form action="." method="POST">{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" value="Registrar"/>
-		</form>
+	<div class="container">
+	<table class="table table-bordered" align="center" border="1" width="100%">
+	<caption><h2 align="center">Registrar Proyecto</h2></caption>
+	<form action="." method="POST">{% csrf_token %}
+	<tr><td align="center">
+			<!--{{ form.as_p }}-->
+			<label align="right"><b>{{form.nombre.label}}:</b></label>
+			<!--{{ form.nombre.errors }}-->
+	</td><td>
+			{{form.nombre}}
+	</td>
+	</tr>
+	<tr><td align="center">			
+		<button class="btn btn-info" onclick="javascript:window.history.go(-1);">Atrás</button>
+		<button type="submit" class="btn btn-success" align="right">Registrar</button>
+	</tr>	
+	</form>
+	</table>	
+	</div>
 </div>
 
 

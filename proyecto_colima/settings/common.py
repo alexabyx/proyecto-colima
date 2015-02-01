@@ -23,7 +23,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['locahost']
+ALLOWED_HOSTS = []
 
 #Rutas de nuestros templates
 TEMPLATE_DIRS = (

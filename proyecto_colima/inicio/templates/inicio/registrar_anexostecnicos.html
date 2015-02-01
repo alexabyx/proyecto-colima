@@ -4,9 +4,16 @@
 
 {% block content %}
 <div id="content-main">
+		<!--	
+		<form action="." method="POST">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Registrar"/>
+		</form>
+		-->
 		<a href="{% url 'inicio:agregar-anexotecnico' %}"><button>Agregar nuevo</button></a>
 		<!--historicos son los concluidos o cancelado
 		cerrar--> 
+
 		<ul>
 			{% for anexo in anexostecnicos %}
 				<li>{{anexo.numero_oficio}}-{{anexo.tipo}}-{{anexo.nombre}} 

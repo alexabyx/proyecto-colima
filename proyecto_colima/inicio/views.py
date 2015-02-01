@@ -23,8 +23,6 @@ from inicio.forms import (	AuthForm,
 							PersonalForm
 						  )
 
-from inicio.models import ( AnexosTecnicos,
-						  )
 
 def registrar_proyecto(request):
 	form = RegistrarProyectoForm()
@@ -34,39 +32,10 @@ def registrar_factura(request):
 	form = FacturasForm()
 	return render(request, 'inicio/registrar_factura.html', {'form': form}, context_instance=RequestContext(request))
 
-#VIEWS PARA ANEXOS TECNICOS
-def anexostecnicos(request):
+def registrar_anexostecnicos(request):
 	form = AnexosTecnicosForm()
 	anexostecnicos = AnexosTecnicos.objects.all().order_by('-fecha_creacion')
-	return render(request, 'inicio/anexostecnicos.html', {'form': form, 'anexostecnicos':anexostecnicos}, context_instance=RequestContext(request))
-
-def agregar_anexotecnico(request):
-	form = AnexosTecnicosForm()
-	return render(request, 'inicio/agregar_anexotecnico.html', {'form':form}, context_instance=RequestContext(request))
-
-def editar_anexotecnico(request, anexo_id):
-	try:
-		anexo = AnexosTecnicos.objects.get(id=anexo_id)
-	except:
-		anexo = None
-
-	form = AnexosTecnicosForm(instance=anexo)	
-
-	return render(request, 'inicio/editar_anexotecnico.html', {'form': form}, context_instance=RequestContext(request))
-
-def eliminar_anexotecnico(request, anexo_id):
-	try:
-		anexo = AnexosTecnicos.objects.get(id=anexo_id)
-		try:
-			anexo.delete()
-			mensaje = "Eliminado"
-		except:
-			mensaje = "Falló al eliminar"
-	except:
-		anexo = None
-		mensaje = "Error inesperado"
-
-	return render(request, 'inicio/eliminar_anexotecnico.html',{'mensaje': mensaje}, context_instance=RequestContext(request))
+	return render(request, 'inicio/registrar_anexostecnicos.html', {'form': form, 'anexostecnicos':anexostecnicos}, context_instance=RequestContext(request))
 
 def registrar_contratos(request):
 	form = ContratosForm()

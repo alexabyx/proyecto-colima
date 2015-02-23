@@ -1,0 +1,31 @@
+<style>
+.input-group-addon{
+  width:40%;
+}
+</style>
+
+<div class="modal-header">
+	<h4 class="modal-title">Entregable {{object.total}}</h4>
+</div>
+
+<div class="modal-body">
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Proyecto</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.proyecto}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Responsable</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.responsable}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Total</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.total}}" aria-describedby="basic-addon1"><br>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<center>
+<button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript: $.fancybox.close()">Aceptar</button>
+	</center>
+  	

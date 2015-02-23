@@ -1,0 +1,146 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Detalles de Documentos Generales{% endblock %}
+	{% block extrascript %}
+
+    <script>
+     function detalle(detalle_doc_responsiva_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_detalle_doc_responsiva/'+detalle_doc_responsiva_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+     					'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+						'afterClose':function(){ window.location.reload();},
+					   });
+		});   	
+     }
+
+     function aviso(detalle_doc_responsiva_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar este documento?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(detalle_doc_responsiva_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(detalle_doc_responsiva_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': detalle_doc_responsiva_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_detalle_doc_responsiva/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+	     					'openEffect': 'elastic',
+							'closeEffect': 'elastic',
+							'afterClose':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+	     					'openEffect': 'elastic',
+							'closeEffect': 'elastic',
+							'afterClose':function(){ window.location.reload();},
+							});
+     			});
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <style>
+    .bienvenida{
+    	padding-right: 15px;
+    }
+    .menu{
+    	padding-left: 15px;
+    	width: 15%;
+    }
+    .panel{
+    	width: 80%;
+    	margin-left: 10%;
+    	margin-right: 10%;
+    }
+    .agregar{
+	    margin-left: 98%;
+	    margin-top: -20px    	
+    }
+    </style>
+    {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+	<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+	<li class="active">Detalles de Doc. de responsiva</li>
+</ol>
+{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	   	Listado de detalles de documentos responsiva
+	  <div>
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-detalle-doc-responsiva' %}">
+	  		<img class="agregar" src="{% static "icons/agregar.png" %}">
+	  	</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Personal</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for detalle in detalles_doc_responsiva %}
+			<tr>
+				<td>{{ detalle.personal }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{detalle.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp; &nbsp;
+					<a href="{% url 'administracion:editar-detalle-doc-responsiva' detalle.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if detalles_doc_responsiva.has_previous %}
+	           <li><a href="?page={{ detalles_doc_responsiva.previous_page_number }}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ detalles_doc_responsiva.number }} de {{ detalles_doc_responsiva.paginator.num_pages }}
+		    {% if detalles_doc_responsiva.has_next %}
+	    		<li><a href="?page={{ detalles_doc_responsiva.next_page_number }}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

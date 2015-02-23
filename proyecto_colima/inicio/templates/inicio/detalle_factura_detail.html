@@ -1,0 +1,31 @@
+<style>
+.input-group-addon{
+  width:40%;
+}
+</style>
+
+<div class="modal-header">
+	<h4 class="modal-title"> Detalle Factura #{{ object.numero_factura }}</h4>
+</div>
+
+<div class="modal-body">
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Factura</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.factura}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Descripcion</span>
+	  <textarea class="form-control" readonly="readonly" aria-describedby="basic-addon1">{{object.descripcion}}</textarea>
+	</div>
+		<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Cantidad</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.cantidad}}" aria-describedby="basic-addon1"><br>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<center>
+<button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript: $.fancybox.close()">Aceptar</button>
+	</center>
+  	

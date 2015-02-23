@@ -1,0 +1,71 @@
+{% load i18n %}
+{% load staticfiles %}
+<style type="text/css">
+</style>
+
+<div id="div_formulario">
+      <form id="formulario" class="agregar_form_1" action="" method="POST">{% csrf_token %}
+          <div class="form-group">
+              <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+          </div>
+    
+          {% if mensaje %}
+          <div class="form-group">
+              <p class="error_mensaje">{{ mensaje }}</p>
+          </div>
+          {% endif %}
+
+        <div class="contenido_form">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Nombre<span class="error">*</span></label> 
+                  {{ form.nombre }}
+            <span id="helpBlock" class="help-block">{{ form.nombre.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Siglas<span class="error">*</span></label>
+                  {{ form.siglas }}
+            <span id="helpBlock" class="help-block">{{ form.siglas.help_text }}</span>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Responsables<span class="error">*</span></label>
+            {{ form.responsable }}
+            <span style="width:80%;" id="helpBlock" class="help-block">{{ form.responsable.help_text }}</span>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Fecha inicio<span class="error">*</span></label>
+            {{ form.fecha_inicio }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_inicio.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Fecha fin<span class="error">*</span></label>
+            {{ form.fecha_fin }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_fin.help_text }}</span>
+          </div>              
+          <div class="form-group">
+            <label for="exampleInputEmail1">Avance<span class="error">*</span></label>
+            {{ form.avance }}
+            <span id="helpBlock" class="help-block">{{ form.avance.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Comentario<span class="error">*</span></label>
+            {{ form.comentario }}
+            <span id="helpBlock" class="help-block">{{ form.comentario.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Cliente<span class="error">*</span></label>
+            {{ form.cliente }}
+              <span id="helpBlock" class="help-block">{{ form.cliente.help_text }}</span>
+          </div>
+          <input type="button" value="Aceptar" onClick="confirmarEdicion();">
+          <input type="button" value="Cancelar" onClick="$.fancybox.close();" >
+        </div>
+      </form>
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmarEdicion();" value="Cancelar" >
+  <input type="button" onClick="editarProyecto(1, {{ id }});" value="Aceptar">
+</div>

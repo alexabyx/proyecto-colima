@@ -1,0 +1,33 @@
+<style>
+.input-group-addon{
+  width:40%;
+}
+</style>
+
+<div class="modal-header">
+	<h4 class="modal-title">Documento General</h4>
+</div>
+
+<div class="modal-body">
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Proyectyo</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.proyecto}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Clave</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.clave}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Creación</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.fecha_creacion}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+
+</div>
+
+<div class="modal-footer">
+	<center>
+<button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript: $.fancybox.close()">Aceptar</button>
+	</center>
+  	

@@ -1,0 +1,149 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}doc_generals{% endblock %}
+	{% block extrascript %}
+    <script>
+     function detalle(doc_general_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_doc_general/'+doc_general_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+     					'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+						'afterClose':function(){ window.location.reload();},
+					   });
+		});   	
+     }
+
+     function aviso(doc_general_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar este documento?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(doc_general_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(doc_general_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': doc_general_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_doc_general/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+	     					'openEffect': 'elastic',
+							'closeEffect': 'elastic',
+							'afterClose':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+	     					'openEffect': 'elastic',
+							'closeEffect': 'elastic',
+							'afterClose':function(){ window.location.reload();},
+							});
+     			});
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <style>
+    .bienvenida{
+    	padding-right: 15px;
+    }
+    .menu{
+    	padding-left: 15px;
+    	width: 15%;
+    }
+    .panel{
+    	width: 80%;
+    	margin-left: 10%;
+    	margin-right: 10%;
+    }
+    .agregar{
+	    margin-left: 98%;
+	    margin-top: -20px    	
+    }
+    </style>
+    {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+	<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+	<li class="active">Doc. Generales</li>
+</ol>
+{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	   	Listado de documentos generales
+	  <div>
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-doc-general' %}">
+	  		<img class="agregar" src="{% static "icons/agregar.png" %}">
+	  	</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Proyecto</th>
+					<th>Clave</th>
+					<th>Fecha de creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for doc in doc_generales %}
+			<tr>
+				<td>{{ doc.proyecto }}</td>
+				<td>{{ doc.clave }}</td>
+				<td>{{ doc.fecha_creacion }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{doc.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp; &nbsp;
+					<a href="{% url 'administracion:editar-doc-general' doc.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if doc_generales.has_previous %}
+	           <li><a href="?page={{ doc_generales.previous_page_number }}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ doc_generales.number }} de {{ doc_generales.paginator.num_pages }}
+		    {% if doc_generales.has_next %}
+	    		<li><a href="?page={{ doc_generales.next_page_number }}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

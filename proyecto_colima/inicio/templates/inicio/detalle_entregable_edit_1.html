@@ -1,0 +1,56 @@
+{% load i18n %}
+{% load staticfiles %}
+<div id="div_formulario">
+    <form id="formulario" class="agregar_form_1" action="." method="POST" enctype="miltipart/form-data">{% csrf_token %}
+
+        <div class="form-group">
+            <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+        </div>
+        {% if mensaje %}
+        <div class="form-group">
+            <p class="error_mensaje">{{ mensaje }}</p>
+        </div>
+        {% endif %}
+
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Entregable<span class="error">*</span></label> 
+                {{ form.entregable }}
+          <span id="helpBlock" class="help-block">{{ form.entregable.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Responsable<span class="error">*</span></label> 
+                {{ form.responsable }}
+          <span id="helpBlock" class="help-block">{{ form.responsable.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">No.<span class="error">*</span></label> 
+                {{ form.numero }}
+          <span id="helpBlock" class="help-block">{{ form.numero.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nombre<span class="error">*</span></label> 
+                {{ form.nombre }}
+          <span id="helpBlock" class="help-block">{{ form.nombre.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Siglas<span class="error">*</span></label> 
+                {{ form.siglas }}
+          <span id="helpBlock" class="help-block">{{ form.siglas.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputFile">Archivo<span class="error">*</span></label>
+          {{ form.archivo }}
+          <span id="helpBlock" class="help-block">{{ form.archivo.help_text }}</span>
+        </div>
+        <input type="button" value="Aceptar" onClick="confirmarEdicion();">
+        <input type="button" value="Cancelar" onClick="$.fancybox.close();" >
+      </div>
+    </form>
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmarEdicion();" value="Cancelar" >
+  <input type="button" onClick="editarDetalleEntregable(1, {{ id }});" value="Aceptar">
+</div>

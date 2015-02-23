@@ -1,0 +1,373 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+  {% block extrascript %}
+  <script type="text/javascript" src="{% static "js/editar_objetos.js" %}"></script>
+  {% endblock %}
+  {% block extrastyle %}
+    <style>
+    .bienvenida{
+      padding-right: 15px;
+    }
+    .agregar{
+      margin-left: 89%;
+      margin-top: -20px     
+    }
+    .form-control{
+      width: 80%;
+    }
+    .contenido_form{
+      margin-left: 10%;
+    }
+    .agregar_form{ 
+      margin-left: 33%;
+      width: 33%;
+        border-style: solid;
+        border-width: 1px; 
+        border-color: #DDDDDD;
+        border-radius: 4px 4px 0 0;
+        padding: 20px;  
+      }
+    #main_content #agregar_form_izq{
+      float: left;
+      margin-left: 10%;
+      width: 35%;
+      border-style: solid;
+      border-width: 1px; 
+      border-color: #DDDDDD;
+      border-radius: 4px 4px 0 0;
+      padding: 20px;
+    }
+    #main_content #form_properties{
+      float:left;
+      width: 35%;
+      margin-left: 10%;
+    }
+    #main_content #form_properties .property{
+      margin-bottom: 10%;
+      border-style: solid;
+      border-width: 1px; 
+      padding: 20px;
+      border-color: #DDDDDD;
+      border-radius: 4px 4px 0 0; 
+    }
+
+      span.error{
+        color: red;
+      }
+      p.error_mensaje{
+        color: red;
+        text-align: center;
+      }
+    </style>
+  {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+  <li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+  <li><a href="{% url 'administracion:personal'%}">Personal</a></li>
+  <li class="active">Editar personal</li>
+</ol>
+{% endblock %}
+
+  {% block contenido %}
+  <div id="main_content">
+    <div id="agregar_form_izq">
+      <form action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <div class="form-group">
+              <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+          </div>
+
+          <div class="contenido_form">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Nombre<span class="error">*</span></label> 
+              {{ form.nombre }}
+              <span id="helpBlock" class="help-block">{{ form.nombre.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Apellido Paterno<span class="error">*</span></label>
+                    {{ form.apellido_paterno }}
+              <span id="helpBlock" class="help-block">{{ form.apellido_paterno.help_text }}</span>        
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Apellido Materno<span class="error">*</span></label>
+              {{ form.apellido_materno }}
+              <span id="helpBlock" class="help-block">{{ form.apellido_materno.help_text }}</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Siglas<span class="error">*</span></label> 
+              {{ form.siglas_nombre }}
+              <span id="helpBlock" class="help-block">{{ form.siglas_nombre.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">RFC<span class="error">*</span></label> 
+              {{ form.rfc }}
+              <span id="helpBlock" class="help-block">{{ form.rfc.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Credencial<span class="error">*</span></label> 
+              {{ form.credencial_elector }}
+              <span id="helpBlock" class="help-block">{{ form.credencial_elector.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Genero<span class="error">*</span></label> 
+              {{ form.genero }}
+              <span id="helpBlock" class="help-block">{{ form.genero.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Dirección<span class="error">*</span></label> 
+              {{ form.direccion }}
+              <span id="helpBlock" class="help-block">{{ form.direccion.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Teléfono<span class="error">*</span></label> 
+              {{ form.telefono }}
+              <span id="helpBlock" class="help-block">{{ form.telefono.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">No. Seguro<span class="error">*</span></label> 
+              {{ form.no_seguro }}
+              <span id="helpBlock" class="help-block">{{ form.no_seguro.help_text }}</span>
+            </div>
+     
+            <div class="form-group">
+              <label for="exampleInputEmail1">Ingreso<span class="error">*</span></label> 
+              {{ form.fecha_ingreso }}
+              <span id="helpBlock" class="help-block">{{ form.fecha_ingreso.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Puesto<span class="error">*</span></label> 
+              {{ form.puesto }}
+              <span id="helpBlock" class="help-block">{{ form.puesto.help_text }}</span>
+            </div>
+          
+            <div class="form-group">
+              <label for="exampleInputEmail1">Turno<span class="error">*</span></label> 
+              {{ form.turno }}
+              <span id="helpBlock" class="help-block">{{ form.turno.help_text }}</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Tipo de Plaza<span class="error">*</span></label> 
+              {{ form.tipo_plaza }}
+              <span id="helpBlock" class="help-block">{{ form.tipo_plaza.help_text }}</span>
+            </div>
+            
+            <div class="form-group" hidden="hidden" id="especificacion">
+              <label for="exampleInputEmail1">Especificación<span class="error">*</span></label> 
+              {{ form.especificacion }}
+              <span id="helpBlock" class="help-block">{{ form.especificacion.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Tipo de pago<span class="error">*</span></label> 
+              {{ form.tipo_pago }}
+              <span id="helpBlock" class="help-block">{{ form.tipo_pago.help_text }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">Monto<span class="error">*</span></label> 
+              {{ form.monto }}
+              <span id="helpBlock" class="help-block">{{ form.monto.help_text }}</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Días laborales<span class="error">*</span></label> 
+              {{ form.dias_trabajo_al_mes }}
+              <span id="helpBlock" class="help-block">{{ form.dias_trabajo_al_mes.help_text }}</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Vencimiento<span class="error">*</span></label> 
+              {{ form.fecha_vencimiento_contrato }}
+              <span id="helpBlock" class="help-block">{{ form.fecha_vencimiento_contrato.help_text }}</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Baja<span class="error">*</span></label> 
+              {{ form.fecha_baja }}
+              <span id="helpBlock" class="help-block">{{ form.fecha_baja.help_text }}</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Motivo<span class="error">*</span></label> 
+              {{ form.motivo_baja }}
+              <span id="helpBlock" class="help-block">{{ form.motivo.help_text }}</span>
+            </div>
+
+            <button type="submit" class="btn btn-default">Guardar</button>
+          </div>
+      </form>
+    </div>
+
+    <div id="form_properties">
+      <div class="property">
+          <h4>Contratos
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for contrato in contratos %}
+              <div class="input-group">
+
+                <input type="text" class="form-control" readonly="readonly" value="{{contrato}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a onClick="editarContrato(0, {{contrato.id}})">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+      <div class="property">
+          <h4>Convenios 
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for convenio in convenios %}
+              <div class="input-group">
+
+                <input type="text" class="form-control" readonly="readonly" value="{{convenio}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a onClick="editarConvenio(0, {{convenio.id}})">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+
+      <div class="property">
+          <h4>Detalles Docs. Generales
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for detalle in detalles_doc_generales %}
+              <div class="input-group">
+                <input type="text" class="form-control" readonly="readonly" value="{{detalle}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a onClick="editarDetalleDocGeneral(0, {{detalle.id}})">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+      <div class="property">
+          <h4>Detalles Docs. Responsiva
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for detalle in detalles_doc_responsiva %}
+              <div class="input-group">
+                <input type="text" class="form-control" readonly="readonly" value="{{detalle}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a onClick="editarDetalleDocResponsiva(0, {{detalle.id}})">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+      <div class="property">
+          <h4>Detalles de Pago Empleado
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for pago in detalles_pago_empleado %}
+              <div class="input-group">
+                <input type="text" class="form-control" readonly="readonly" value="{{pago}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a onClick="editarDetallePagoEmpleado(0, {{pago.id}})">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+      <div class="property">
+          <h4>Entregables
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for entregable in entregables %}
+              <div class="input-group">
+
+                <input type="text" class="form-control" readonly="readonly" value="{{entregable}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a class="entregables" onClick="editarEntregable(0, {{ entregable.id}});">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+      <div class="property">
+          <h4>Facturas
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for factura in facturas %}
+              <div class="input-group">
+
+                <input type="text" class="form-control" readonly="readonly" value="{{factura}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a class="entregables" onClick="editarFactura(0, {{ factura.id}});">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+      <div class="property">
+          <h4>Propuestas
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for propuesta in propuestas %}
+              <div class="input-group">
+
+                <input type="text" class="form-control" readonly="readonly" value="{{propuesta}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a class="entregables" onClick="editarPropuesta(0, {{ propuesta.id}});">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+
+    </div>
+  </div>
+  {% endblock %}

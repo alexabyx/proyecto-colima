@@ -1,0 +1,47 @@
+{% load i18n %}
+{% load staticfiles %}
+    <style>
+      span.error{
+        color: red;
+      }
+      p.error_mensaje{
+        color: red;
+        text-align: center;
+      }
+    </style>
+
+<div id="div_formulario"> 
+    <form id="formulario" class="agregar_form_1" action="." method="POST" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="form-group">
+          <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="form-group">
+            <p class="error_mensaje">{{ mensaje }}</p>
+        </div>
+        {% endif %}
+
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Personal<span class="error">*</span></label> 
+          {{ form.personal }}
+          <span id="helpBlock" class="help-block">{{ form.personal.help_text }}</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="exampleInputFile">Documento<span class="error">*</span></label>
+          {{ form.archivo_documento_responsiva }}
+          <span id="helpBlock" class="help-block">{{ form.archivo_documento_responsiva.help_text }}</span>
+        </div>
+      </div>
+          <input type="button" value="Aceptar" onClick="confirmarEdicion();">
+          <input type="button" value="Cancelar" onClick="$.fancybox.close();" >
+    </form> 
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmarEdicion();" value="Cancelar" >
+  <input type="button" onClick="editarDetalleDocResponsiva(1, {{ id }});" value="Aceptar">
+</div>

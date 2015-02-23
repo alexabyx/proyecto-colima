@@ -1,0 +1,155 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Contratos{% endblock %}
+	{% block extrascript %}
+    <script>
+     function detalle(contrato_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_contrato/'+contrato_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+						'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+					   });
+		});   	
+     }
+
+     function aviso(contrato_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar este contrato?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(contrato_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(contrato_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': contrato_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_contrato/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+								'openEffect': 'elastic',
+								'closeEffect': 'elastic',
+								'afterShow':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+								'openEffect': 'elastic',
+								'closeEffect': 'elastic',
+								'afterShow':function(){ window.location.reload();},
+							});
+     			});
+
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <style>
+    .bienvenida{
+    	padding-right: 15px;
+    }
+    .menu{
+    	padding-left: 15px;
+    	width: 15%;
+    }
+    .panel{
+    	width: 80%;
+    	margin-left: 10%;
+    	margin-right: 10%;
+    }
+    .agregar{
+	    margin-left: 98%;
+	    margin-top: -20px    	
+    }
+    </style>
+    {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+	<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+	<li class="active">Contratos</li>
+</ol>
+{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Listado de contratos
+	  <div>
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-contrato' %}">
+	  		<img class="agregar" src="{% static "icons/agregar.png" %}">
+	  		<!-- <button type="button" class="btn btn-default agregar" />Agregar nuevo</button>-->
+	  	</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>No. Oficio</th>
+					<th>Fecha de creacion</th>
+					<th>Proyecto</th>
+					<th>Encargado</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for contrato in contratos %}
+			<tr>
+				<td>#{{ contrato.numero_oficio }}</td>
+				<td>{{ contrato.fecha_creacion }}</td>
+				<td>{{ contrato.proyecto }}</td>
+				<td>{{ contrato.encargado }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{contrato.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp; &nbsp;
+					<a href="{% url 'administracion:editar-contrato' contrato.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp; &nbsp;
+					<a onClick="aviso({{ contrato.id }});" title="Eliminar">
+						<img src="{% static "icons/eliminar.png" %}"> 
+					</a>
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if contratos.has_previous %}
+	           <li><a href="?page={{ contratos.previous_page_number }}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ contratos.number }} de {{ contratos.paginator.num_pages }}
+		    {% if contratos.has_next %}
+	    		<li><a href="?page={{ contratos.next_page_number }}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

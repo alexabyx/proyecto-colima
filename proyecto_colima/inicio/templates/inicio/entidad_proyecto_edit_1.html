@@ -1,0 +1,36 @@
+{% load i18n %}
+{% load staticfiles %}
+<div id="div_formulario"> 
+    <form id="formulario" class="agregar_form_1" action="." method="POST">{% csrf_token %}
+
+        <div class="form-group">
+            <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+        </div>
+
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Entidad<span class="error">*</span></label> 
+                {{ form.entidad }}
+          <span id="helpBlock" class="help-block">{{ form.entidad.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Proyecto<span class="error">*</span></label> 
+                {{ form.proyecto }}
+          <span id="helpBlock" class="help-block">{{ form.proyecto.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Porcentaje<span class="error">*</span></label> 
+                {{ form.porcentaje }}
+          <span id="helpBlock" class="help-block">{{ form.porcentaje.help_text }}</span>
+        </div>
+        <input type="button" value="Aceptar" onClick="confirmarEdicion();">
+        <input type="button" value="Cancelar" onClick="$.fancybox.close();" >
+      </div>
+    </form>
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmarEdicion();" value="Cancelar" >
+  <input type="button" onClick="editarEntidadProyecto(1, {{ id }});" value="Aceptar">
+</div>

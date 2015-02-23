@@ -1,0 +1,66 @@
+{% load i18n %}
+{% load staticfiles %}
+    <style>
+    .form-control{
+      width: 80%;
+    }
+    .agregar_form_1{ 
+      margin-left: 3%;
+      width: 80%;
+        border-style: solid;
+        border-width: 1px; 
+        border-color: #DDDDDD;
+        border-radius: 4px 4px 0 0;
+        padding: 20px;  
+      }
+
+      span.error{
+        color: red;
+      }
+      p.error_mensaje{
+        color: red;
+        text-align: center;
+      }
+    </style>
+
+<div id="div_formulario">
+    <form id="formulario" class="agregar_form_1" action="" method="POST">{% csrf_token %}
+      <div class="contenido_form">
+        <div class="form-group">
+            <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="form-group">
+            <p class="error_mensaje">{{ mensaje }}</p>
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+          <label for="exampleInputEmail1">Proyecto<span class="error">*</span></label> 
+          {{ form.proyecto }}
+          <span id="helpBlock" class="help-block">{{ form.proyecto.help_text }}</span>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputEmail1">Responsable<span class="error">*</span></label> 
+          {{ form.responsable }}
+          <span id="helpBlock" class="help-block">{{ form.responsable.help_text }}</span>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputEmail1">Total<span class="error">*</span></label> 
+          {{ form.total }}
+          <span id="helpBlock" class="help-block">{{ form.total.help_text }}</span>
+        </div>
+      </div>
+        <input type="button" value="Aceptar" onClick="confirmarEdicion();">
+        <input type="button" value="Cancelar" onClick="$.fancybox.close();" >
+    </form>
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmarEdicion();" value="Cancelar" >
+  <input type="button" onClick="editarEntregable(1, {{ id }});" value="Aceptar">
+</div>

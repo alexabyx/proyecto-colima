@@ -101,5 +101,25 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'inicio/static', ''),
+)
+
 
 TIEMPO_EXPIRACION_SESION = 14400
+
+
+#Repositorio de archivos
+REPOSITORIO_GENERAL             = os.path.join(BASE_DIR, 'repositorio', '') 
+
+PERSONAL                        = os.path.join(REPOSITORIO_GENERAL, 'personal', '')
+DETALLES_PAGO_EMPLEADO          = os.path.join(REPOSITORIO_GENERAL, 'detalles_pago_empleado', '')
+DETALLES_DOCUMENTO_RESPONSIVA   = os.path.join(REPOSITORIO_GENERAL, 'detalles_documento_responsiva', '')
+ANEXOS_TECNICOS                 = os.path.join(REPOSITORIO_GENERAL, 'anexos_tecnicos', '')
+CONVENIOS                       = os.path.join(REPOSITORIO_GENERAL, 'convenios', '')
+CONTRATOS                       = os.path.join(REPOSITORIO_GENERAL, 'contratos', '')
+ENTREGABLES                     = os.path.join(REPOSITORIO_GENERAL, 'entregables', '')
+DETALLES_ENTREGABLES            = os.path.join(REPOSITORIO_GENERAL, 'detalles_entregables', '')
+FACTURAS                        = os.path.join(REPOSITORIO_GENERAL, 'facturas', '')
+DETALLE_DOCUMENTOS_GENERALES    = os.path.join(REPOSITORIO_GENERAL, 'detalle_documentos_generales', '')
+print FACTURAS

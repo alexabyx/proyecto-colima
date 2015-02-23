@@ -1,0 +1,155 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Convenios{% endblock %}
+	{% block extrascript %}
+    <script>
+     function detalle(convenio_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_convenio/'+convenio_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+						'openEffect': 'elastic',
+						'closeEffect': 'elastic',	
+					   });
+		});   	
+     }
+
+     function aviso(convenio_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar este anexo convenio?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(convenio_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(convenio_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': convenio_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_convenio/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+								'openEffect': 'elastic',
+								'closeEffect': 'elastic',
+								'afterClose':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+								'openEffect': 'elastic',
+								'closeEffect': 'elastic',
+								'afterClose':function(){ window.location.reload();},
+							});
+     			});
+
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <style>
+    .bienvenida{
+    	padding-right: 15px;
+    }
+    .menu{
+    	padding-left: 15px;
+    	width: 15%;
+    }
+    .panel{
+    	width: 80%;
+    	margin-left: 10%;
+    	margin-right: 10%;
+    }
+    .agregar{
+	    margin-left: 98%;
+	    margin-top: -20px    	
+    }
+    </style>
+    {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+	<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+	<li class="active">Convenios</li>
+</ol>
+{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Listado de anexos convenios
+	  <div>
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-convenio' %}">
+	  		<img class="agregar" src="{% static "icons/agregar.png" %}">
+	  		<!-- <button type="button" class="btn btn-default agregar" />Agregar nuevo</button>-->
+	  	</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Número</th>
+					<th>Proyecto</th>
+					<th>Encargado</th>
+					<th>Fecha de creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for convenio in convenios %}
+			<tr>
+				<td>#{{ convenio.numero }}</td>
+				<td>{{ convenio.proyecto }}</td>
+				<td>{{ convenio.encargado }}</td>
+				<td>{{ convenio.fecha_creacion }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{convenio.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp; &nbsp;
+					<a href="{% url 'administracion:editar-convenio' convenio.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp; &nbsp;
+					<a onClick="aviso({{ convenio.id }});" title="Eliminar">
+						<img src="{% static "icons/eliminar.png" %}"> 
+					</a>
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if convenios.has_previous %}
+	           <li><a href="?page={{ convenios.previous_page_number }}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ convenios.number }} de {{ convenios.paginator.num_pages }}
+		    {% if convenios.has_next %}
+	    		<li><a href="?page={{ convenios.next_page_number }}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

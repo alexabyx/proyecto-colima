@@ -1,0 +1,79 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+  {% block extrascript %}
+  {% endblock %}
+  {% block extrastyle %}
+    <style>
+    .bienvenida{
+      padding-right: 15px;
+    }
+    .agregar{
+      margin-left: 89%;
+      margin-top: -20px     
+    }
+    .form-control{
+      width: 80%;
+    }
+    .contenido_form{
+      margin-left: 10%;
+    }
+    .agregar_form{ 
+      margin-left: 33%;
+      width: 33%;
+        border-style: solid;
+        border-width: 1px; 
+        border-color: #DDDDDD;
+        border-radius: 4px 4px 0 0;
+        padding: 20px;  
+      }
+
+      span.error{
+        color: red;
+      }
+      p.error_mensaje{
+        color: red;
+        text-align: center;
+      }
+    </style>
+  {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+  <li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+  <li><a href="{% url 'administracion:contratos' %}">Contratos</a></li>
+  <li class="active">Crear contrato</li>
+</ol>
+{% endblock %}
+  {% block contenido %}    
+    <form class="agregar_form" action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <div class="contenido_form">
+
+        <div class="form-group">
+            <p class="error_mensaje">Los campos marcados con * son requeridos.</p>
+        </div>
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">No. Oficio<span class="error">*</span></label> 
+                {{ form.numero_oficio }}
+          <span id="helpBlock" class="help-block">{{ form.numero_oficio.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Proyecto<span class="error">*</span></label>
+                {{ form.proyecto }}
+          <span id="helpBlock" class="help-block">{{ form.proyecto.help_text }}</span>        
+        </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Encargado<span class="error">*</span></label>
+                {{ form.encargado }}
+          <span id="helpBlock" class="help-block">{{ form.encargado.help_text }}</span>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputFile">Archivo<span class="error">*</span></label>
+                {{ form.archivo }}
+          <span id="helpBlock" class="help-block">{{ form.archivo.help_text }}</span>
+              </div>
+      </div>
+                    <button type="submit" class="btn btn-default">Agregar</button>
+    </form>
+    {% endblock %}

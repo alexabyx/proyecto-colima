@@ -1,0 +1,45 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+  <head>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins)-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    {% block script %}
+    {% endblock %}
+
+    {% block style %}
+    {% endblock %}
+
+    {% block extrascript %}
+    <script type="text/javascript"></script>
+    {% endblock %}
+    
+    {% block extrastyle %}
+    <style type="text/css"></style>
+    {% endblock %}
+
+    <title> O. A. P. | {% block titulo %}  {% endblock %} </title>
+  </head>
+  <body>
+    {% block header %}
+    {% endblock %}
+
+    {% block breadcrumbs %}
+    {% endblock %}
+    
+    {% block menus %}
+    {% endblock %}
+
+    {% block contenido %}
+    {% endblock %}
+  </body>
+</html>
+

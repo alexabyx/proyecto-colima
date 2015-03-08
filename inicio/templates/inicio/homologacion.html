@@ -1,0 +1,82 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Homologación{% endblock %}
+	{% block extrascript %}
+	<script>
+	function detalle(documento_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_homologacion/'+documento_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+						'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+					   });
+		});   	
+     }
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Homologación</li>
+	</ol>
+	{% endblock %}
+
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Homologación de documentos
+	  <div class="agregar">
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-homologacion' %}">
+	  		<img  src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  	</a>&nbsp;
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Fecha de creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for documento in documentos %}
+			<tr>
+				<td>
+					{{ documento.nombre }}
+				</td>
+				<td>{{ documento.fecha }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{documento.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp;
+					<a href="{% url 'administracion:editar-homologacion' documento.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp;
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if documentos.has_previous %}
+	           <li><a href="?page={{ documentos.previous_page_number }}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ documentos.number }} de {{ documentos.paginator.num_pages }}
+		    {% if documentos.has_next %}
+	    		<li><a href="?page={{ documentos.next_page_number }}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

@@ -1,0 +1,108 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+  {% block extrascript %}
+  {% endblock %}
+  {% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/formularios.css" %}" media="screen">
+  {% endblock %}
+  {% block breadcrumbs %}
+  <ol class="breadcrumb" style="margin-top:-20px">
+    <li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+    <li><a href="{% url 'administracion:facturas'%}">Facturas</a></li>
+    <li class="active">Crear factura</li>
+  </ol>
+  {% endblock %}
+  {% block contenido %}    
+    <form class="agregar_form" action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+      <div class="form-group">
+          {% if mensaje %}
+            <p class="error_mensaje">{{ mensaje }}</p>
+          {% endif %}
+      </div>
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.contrato.label }}<span class="error">{{ form.contrato.errors }}</span></label> 
+                {{ form.contrato }}
+          <span id="helpBlock" class="help-block">{{ form.contrato.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.responsable.label }}<span class="error">{{ form.responsable.errors }}</span></label>
+                {{ form.responsable }}
+          <span id="helpBlock" class="help-block">{{ form.responsable.help_text }}</span>        
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.numero_factura.label }}<span class="error">{{ form.numero_factura.errors }}</span></label>
+          {{ form.numero_factura }}
+          <span id="helpBlock" class="help-block">{{ form.numero_factura.help_text }}</span>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.fecha_entrega.label }}<span class="error">{{ form.fecha_entrega.errors }}</span></label>
+            {{ form.fecha_entrega }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_entrega.help_text }}</span>
+        </div>  
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.folio_venta.label }}<span class="error">{{ form.folio_venta.errors }}</span></label>
+          {{ form.folio_venta }}
+          <span id="helpBlock" class="help-block">{{ form.folio_venta.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.rfc.label }}<span class="error">{{ form.rfc.errors }}</span></label>
+          {{ form.rfc }}
+          <span id="helpBlock" class="help-block">{{ form.rfc.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.direccion.label }}<span class="error">{{ form.direccion.errors }}</span></label>
+          {{ form.direccion }}
+          <span id="helpBlock" class="help-block">{{ form.direccion.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.subtotal.label }}<span class="error">{{ form.subtotal.errors }}</span></label>
+          {{ form.subtotal }}
+          <span id="helpBlock" class="help-block">{{ form.subtotal.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.iva.label }}<span class="error">{{ form.iva.errors }}</span></label>
+          {{ form.iva }}
+          <span id="helpBlock" class="help-block">{{ form.iva.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.total_con_numero.label }}<span class="error">{{ form.total_con_numero.errors }}</span></label>
+          {{ form.total_con_numero }}
+          <span id="helpBlock" class="help-block">{{ form.total_con_numero.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.total_con_letra.label }}<span class="error">{{ form.total_con_letra.errors }}</span></label>
+          {{ form.total_con_letra }}
+          <span id="helpBlock" class="help-block">{{ form.total_con_letra.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.status.label }}<span class="error">{{ form.status.errors }}</span></label>
+          {{ form.status }}
+          <span id="helpBlock" class="help-block">{{ form.status.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.pagada.label }}<span class="error">{{ form.pagada.erros }}</span></label>&nbsp; &nbsp;
+          {{ form.pagada }}
+          <span id="helpBlock" class="help-block">{{ form.pagada.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputFile">{{ form.archivo_xml.label }}<span class="error">{{ form.archivo_xml.errors }}</span></label>
+          {{ form.archivo_xml }}
+          <span id="helpBlock" class="help-block">{{ form.archivo_xml.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputFile">{{ form.archivo_fisico.label }}<span class="error">{{ form.archivo_fisico.errors }}</span></label>
+          {{ form.archivo_fisico }}
+          <span id="helpBlock" class="help-block">{{ form.archivo_fisico.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <center>
+              <button type="submit" class="btn btn-primary">Agregar</button>
+          </center>
+        </div>
+      </div>
+    </form>
+    {% endblock %}

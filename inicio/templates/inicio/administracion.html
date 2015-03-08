@@ -1,0 +1,55 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block titulo %}Administración{% endblock %}
+
+{% block extrascript %}
+	<script type="text/javascript">
+		function verAlarma(id) {
+				$.get("/administracion/modal_alarma", {'id': id}, function(response){
+					$.fancybox({'content': response,
+								'afterClose': function (){
+									$.post("/administracion/alarma_revisada/", {'id': id});
+								},});
+				});
+			}	
+	</script>
+{% endblock %}
+
+
+{% block extrastyle %}
+	<style>
+	.alarmas{
+		width: 30%;
+		margin-left: 50%;
+		margin-top: 5%;
+	}
+	</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+	  <li class="active">Inicio</li>
+	</ol>
+{% endblock %}
+
+
+{% block contenido %}
+
+<div class="alarmas">
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+    		<h3 class="panel-title">Alarmas</h3>
+  		</div>
+		<div class="panel-body">
+			<div class="list-group">
+			{% for alarma in alarmas %}
+				<a href="#" class="list-group-item {{ alarma.class_alert }}" onClick="verAlarma({{ alarma.id }})">{{ alarma.emisor.first_name}}: {{ alarma.mensaje|truncatewords:5 }}</a>
+			{% endfor %}
+			</div>	
+		</div>
+	</div>
+</div>
+
+{% endblock %}

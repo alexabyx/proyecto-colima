@@ -1,0 +1,14 @@
+/*CSS de Vistas de enlistado*/
+.panel{
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+/*CSS para boton de agregar*/
+.agregar{
+    margin-left: 77%;
+    margin-top: -20px;    	
+}
+.agregar a{
+	color:white;
+}

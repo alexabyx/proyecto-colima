@@ -1,0 +1,144 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Detalles de pago a empleados{% endblock %}
+	{% block extrascript %}
+	<script type="text/javascript" src="{% static "js/en_historico.js" %}"></script>
+    <script>
+     function detalle(detalle_pago_empleado_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_detalle_pago_empleado/'+detalle_pago_empleado_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+     					'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+					   });
+		});   	
+     }
+
+     function aviso(detalle_pago_empleado_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar esta detalle?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(detalle_pago_empleado_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(detalle_pago_empleado_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': detalle_pago_empleado_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_detalle_pago_empleado/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+	     					'openEffect': 'elastic',
+							'closeEffect': 'elastic',
+							'afterClose':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+	     					'openEffect': 'elastic',
+							'closeEffect': 'elastic',
+							'afterClose':function(){ window.location.reload();},
+							});
+     			});
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+    
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Detalles de pago a empleados</li>
+	</ol>
+	{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	   	Listado de detalles de pagos a empleados
+	  <div class="agregar">
+	  	{% if not historico %}
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-detalle-pago-empleado' %}">
+	  		<img src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  	</a>&nbsp;
+	  	{% endif %}
+		<a title="Ver historico" href="{% url 'administracion:detalles-pago-empleado' %}?historico={% if historico %}{% else %}1{% endif %}">
+		     <img  src="{% static "icons/historico.png" %}">{% if historico %}Ver activos{% else %}Ver historico{% endif %}
+		</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Personal</th>
+					<th>Responsable</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for detalle in detalles_pago_empleado %}
+			<tr>
+				<td>{{ detalle.personal }}</td>
+				<td>{{ detalle.responsable }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{detalle.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp; 
+					{% if not detalle.en_historico %}
+					<a href="{% url 'administracion:editar-detalle-pago-empleado' detalle.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp;
+					<a onClick="aviso_historico('detalle_pago_empleado', {{ detalle.id }}, 2);" title="Histórico">
+						<img src="{% static "icons/enviar_historico.png" %}">
+					</a>&nbsp;
+					<a onClick="aviso_historico('detalle_pago_empleado', {{ detalle.id }}, 3);" title="Carcelar">
+						<img src="{% static "icons/cancelar.png" %}">
+					</a>
+					{% endif%}
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if detalles_pago_empleado.has_previous %}
+	           <li><a href="?page={{ detalles_pago_empleado.previous_page_number }}{% if historico %}&historico=1{% endif %}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ detalles_pago_empleado.number }} de {{ detalles_pago_empleado.paginator.num_pages }}
+		    {% if detalles_pago_empleado.has_next %}
+	    		<li><a href="?page={{ detalles_pago_empleado.next_page_number }}{% if historico %}&historico=1{% endif %}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

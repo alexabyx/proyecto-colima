@@ -1,0 +1,83 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+  {% block extrascript %}
+  <script type="text/javascript" src="{% static "js/editar_objetos.js" %}"></script>
+  {% endblock %}
+  {% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/formularios.css" %}" media="screen">
+  {% endblock %}
+  {% block breadcrumbs %}
+  <ol class="breadcrumb" style="margin-top:-20px">
+    <li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+    <li><a href="{% url 'administracion:contratos' %}">Contratos</a></li>
+    <li class="active">Editar contrato</li>
+  </ol>
+  {% endblock %}
+  {% block contenido %}
+  <div id="main_content">
+    <div id="agregar_form_izq">
+    <form action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <div class="form-group">
+        {% if mensaje %}
+          <p class="error_mensaje">{{ mensaje }}</p>
+        {% endif %}
+      </div>
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.numero_oficio.label }}<span class="error">{{ form.numero_oficio.errors }}</span></label> 
+                {{ form.numero_oficio }}
+          <span id="helpBlock" class="help-block">{{ form.numero_oficio.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.proyecto.label }}<span class="error">{{ form.proyecto.errors }}</span></label>
+                {{ form.proyecto }}
+          <span id="helpBlock" class="help-block">{{ form.proyecto.help_text }}</span>        
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.encargado.label }}<span class="error">{{ form.encargado.errors }}</span></label>
+          {{ form.encargado }}
+          <span id="helpBlock" class="help-block">{{ form.encargado.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputFile">{{ form.archivo.label }}<span class="error">{{ form.archivo.errors }}</span></label>
+          {% if contrato.archivo %}
+            <a target="_blank" href="{{ contrato.archivo_liga }}">Ver actual</a>
+          {% endif %}
+          {{ form.archivo }}
+          <span id="helpBlock" class="help-block">{{ form.archivo.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <center>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </center>
+        </div>
+      </div>
+    </form>
+    </div>
+
+    <div id="form_properties">
+      <div class="property">
+          <h4>Facturas
+            <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+            <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+          </h4>
+          <div hidden="hidden">
+            {% for factura in facturas %}
+              <div class="input-group">
+
+                <input type="text" class="form-control" readonly="readonly" value="{{factura}}" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">
+                  <a onClick="editarFactura(0, {{factura.id}})">
+                    <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                  </a>
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+
+  </div>
+
+  {% endblock %}

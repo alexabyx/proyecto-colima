@@ -1,0 +1,88 @@
+{% load i18n %}
+{% load staticfiles %}
+<style>
+.input-group-addon{
+  width:50%;
+
+}
+</style>
+
+<div class="modal-header">
+	<h4 class="modal-title">Detalle de pago</h4>
+</div>
+
+<div class="modal-body">
+	<div class="input-group">
+	  <span class="input-group-addon">Detalle de Entregable</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.entregable}}" aria-describedby="basic-addon1"><br>
+	</div>	
+	<div class="input-group">
+	  <span class="input-group-addon">Pago</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.pago}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Detalle pago</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.detalle_pago}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Nombre de pago origen</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.nombre_pago_origen}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Siglas de pago origen</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.siglas_pago_origen}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Nombre de pago destino</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.nombre_pago_destino}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Siglas de pago destino</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.siglas_pago_destino}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Fecha de pago</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.fecha_pago}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Monto</span>
+	  <input type="text" class="form-control" readonly="readonly" value="${%if object.monto %}{{ object.monto }}{% else%}0.00{% endif %}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon">Porcentaje del pago</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.porcentaje_de_pago}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Tipo de pago</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.tipo_pago_tipo}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Documento de deposito</span>
+	  {% if object.documento_deposito %}
+	  <a target="_blank" href="{{object.documento_deposito_liga}}">
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.documento_deposito}}" aria-describedby="basic-addon1">
+	  </a>
+	  {% else %}
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.documento_deposito}}" aria-describedby="basic-addon1">
+	  {% endif%} 
+	  <br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Responsable</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.responsable}}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon">Pagado</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{% if object.pagado%} Sí {%else%} No {% endif %}" aria-describedby="basic-addon1"><br>
+	</div>
+</div>
+
+		
+<div class="modal-footer">
+	<center>
+		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="javascript: $.fancybox.close()">
+			Aceptar
+		</button>
+	</center>
+</div>

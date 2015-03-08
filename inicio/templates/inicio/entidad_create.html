@@ -1,0 +1,48 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+  {% block extrascript %}
+  {% endblock %}
+  {% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/formularios.css" %}" media="screen">
+  {% endblock %}
+  {% block breadcrumbs %}
+  <ol class="breadcrumb" style="margin-top:-20px">
+    <li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+    <li><a href="{% url 'administracion:entidades'%}">Entidades</a></li>
+    <li class="active">Crear entidad</li>
+  </ol>
+  {% endblock %}
+  {% block contenido %}    
+    <form class="agregar_form" action="." method="POST">{% csrf_token %}
+      <div class="form-group">
+        {% if mensaje %}
+          <p class="error_mensaje">{{ mensaje }}</p>
+        {% endif %}
+      </div>
+
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.nombre.label }}<span class="error">{{ form.nombre.errors }}</span></label> 
+                {{ form.nombre }}
+          <span id="helpBlock" class="help-block">{{ form.nombre.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.siglas.label }}<span class="error">{{ form.siglas.errors }}</span></label> 
+                {{ form.siglas }}
+          <span id="helpBlock" class="help-block">{{ form.siglas.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.tipo.label }}<span class="error">{{ form.tipo.errors }}</span></label> 
+                {{ form.tipo }}
+          <span id="helpBlock" class="help-block">{{ form.tipo.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <center>
+              <button type="submit" class="btn btn-primary">Agregar</button>
+          </center>
+        </div>
+      </div>
+    </form>
+    {% endblock %}

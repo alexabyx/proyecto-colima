@@ -1,0 +1,97 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Detalles de Documentos Generales{% endblock %}
+	{% block extrascript %}
+	<script type="text/javascript" src="{% static "js/en_historico.js" %}"></script>
+    <script>
+     function detalle(detalle_doc_general_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_detalle_doc_general/'+detalle_doc_general_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+     					'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+						'afterClose':function(){ window.location.reload();},
+					   });
+		});   	
+     }
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Detalles de Doc. Generales</li>
+	</ol>
+	{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	   	Listado de detalles de documentos generales
+	  <div  class="agregar">
+	  	{% if not historico %}
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-detalle-doc-general' %}">
+	  		<img src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  	</a>&nbsp;
+		{% endif %}
+		<a title="Ver historico" href="{% url 'administracion:detalle-doc-generales' %}?historico={% if historico %}{% else %}1{% endif %}">
+		     <img  src="{% static "icons/historico.png" %}">{% if historico %}Ver activos{% else %}Ver historico{% endif %}
+		</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Documento general</th>
+					<th>Responsable</th>
+					<th>Nombre del documento</th>
+					<th>Fecha de creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for detalle in detalle_docs_generales %}
+			<tr>
+				<td>{{ detalle.documentos_generales }}</td>
+				<td>{{ detalle.responsable }}</td>
+				<td>{{ detalle.nombre }}</td>
+				<td>{{ detalle.fecha_creacion }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{detalle.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp;
+					{% if not detalle.en_historico %}
+					<a href="{% url 'administracion:editar-detalle-doc-general' detalle.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp;
+					<a onClick="aviso_historico('detalle_doc_general', {{ detalle.id }}, 2);" title="Histórico">
+	                    <img src="{% static "icons/enviar_historico.png" %}">
+	               	</a>&nbsp;
+	               	<a onClick="aviso_historico('detalle_doc_general', {{ detalle.id }}, 3);" title="Carcelar">
+	                    <img src="{% static "icons/cancelar.png" %}">
+	               	</a>&nbsp;
+					{% endif %}
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if detalle_docs_generales.has_previous %}
+	           <li><a href="?page={{ detalle_docs_generales.previous_page_number }}{% if historico %}&historico=1{% endif %}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ detalle_docs_generales.number }} de {{ detalle_docs_generales.paginator.num_pages }}
+		    {% if detalle_docs_generales.has_next %}
+	    		<li><a href="?page={{ detalle_docs_generales.next_page_number }}{% if historico %}&historico=1{% endif %}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

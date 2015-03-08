@@ -1,0 +1,52 @@
+
+/*CSS para contenido de formularios*/
+.contenido_form{
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.form-control{
+  width: 100%;
+}
+
+/*CSS para fromularios de agregado*/
+.agregar_form{ 
+  margin-left: 33%;
+  width: 33%;
+  border-style: solid;
+  border-width: 1px; 
+  border-color: #DDDDDD;
+  border-radius: 4px 4px 0 0;
+  padding: 20px;  
+}
+span.error{
+    color: red;
+}
+p.error_mensaje{
+    color: red;
+    text-align: center;
+}
+
+/*CSS para edición de formularios con inlines*/
+#main_content #agregar_form_izq{
+  float: left;
+  margin-left: 10%;
+  width: 35%;
+  border-style: solid;
+  border-width: 1px; 
+  border-color: #DDDDDD;
+  border-radius: 4px 4px 0 0;
+  padding: 20px;
+}
+#main_content #form_properties{
+  float:left;
+  width: 35%;
+  margin-left: 10%;
+}
+#main_content #form_properties .property{
+  margin-bottom: 10%;
+  border-style: solid;
+  border-width: 1px; 
+  padding: 20px;
+  border-color: #DDDDDD;
+  border-radius: 4px 4px 0 0; 
+}

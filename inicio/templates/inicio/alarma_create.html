@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load staticfiles %}
+    <style>
+      span.error{
+        color: red;
+      }
+      p.error_mensaje{
+        color: red;
+        text-align: center;
+      }
+    </style>
+<div id="div_formulario">
+  <form id="formulario" action="" method="POST">{% csrf_token %}
+    {% if mensaje %}
+    <div class="form-group">
+        <p class="error_mensaje">{{ mensaje }}</p>
+    </div>
+    {% endif %}
+
+    <div class="contenido_form">
+      <div class="form-group">
+        <label for="exampleInputEmail1">{{form.receptor.label}}<span class="error">{{form.receptor.errors}}</span></label> 
+        {{ form.receptor }}
+        <span id="helpBlock" class="help-block">{{ form.receptor.help_text }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputEmail1">{{form.fecha_vencimiento.label}}<span class="error">{{form.fecha_vencimiento.errors}}</span></label> 
+        {{ form.fecha_vencimiento }}
+        <span id="helpBlock" class="help-block">{{ form.fecha_vencimiento.help_text }}</span>
+      </div>
+      
+      <div class="form-group">
+        <label for="exampleInputEmail1">{{form.mensaje.label}}<span class="error">{{form.mensaje.errors}}</span></label> 
+        {{ form.mensaje }}
+        <span id="helpBlock" class="help-block">{{ form.mensaje.help_text }}</span>
+      </div>
+      <div class="form-group">
+        <center>
+          <input type="button" value="Aceptar" onClick="confirmarAlarma();">
+          <input type="button" value="Cancelar" onClick="$.fancybox.close();">
+        </center>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmacionAlarma();" value="Cancelar" >
+  <input type="button" onClick="crearAlarma(1);" value="Aceptar">
+</div>

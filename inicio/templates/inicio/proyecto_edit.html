@@ -1,0 +1,226 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+  {% block extrascript %}
+  <script type="text/javascript" src="{% static "js/editar_objetos.js" %}"></script>
+  {% endblock %}
+  {% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/formularios.css" %}" media="screen">
+  {% endblock %}
+  {% block breadcrumbs %}
+  <ol class="breadcrumb" style="margin-top:-20px">
+    <li><a href="{% url 'administracion:index' %}">Inicio</a> </li>
+    <li><a href="{% url 'administracion:proyectos' %}">Proyectos</a></li>
+    <li class="active">Editar Proyecto</li>
+  </ol>
+  {% endblock %}
+
+  {% block contenido %}
+<div id="main_content">
+    <div id="agregar_form_izq">
+      <form action="." method="POST">{% csrf_token %}
+        <div class="form-group">
+          {% if mensaje %}
+            <p class="error_mensaje">{{ mensaje }}</p>
+          {% endif %}
+        </div>
+
+      <div class="contenido_form">
+        <div class="form-group">
+          <label  for="exampleInputEmail1">
+            {{ form.nombre.label }}
+            <span class="error">{% if form.nombre.errors %}{{ form.nombre.errors }}{% endif %}</span>
+          </label> 
+                {{ form.nombre }}
+            <span id="helpBlock" class="help-block">{{ form.nombre.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.siglas.label }}
+              <span class="error">{% if form.siglas.errors %}{{ form.siglas.errors }}{% endif %}</span>
+            </label>
+                {{ form.siglas }}
+            <span id="helpBlock" class="help-block">{{ form.siglas.help_text }}</span>        
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.cliente.label }}
+              <span class="error">{% if form.cliente.errors %}{{ form.cliente.errors }}{% endif %}</span>
+            </label>
+                {{ form.cliente }}
+            <span id="helpBlock" class="help-block">{{ form.cliente.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.responsable.label }}
+              <span class="error">{% if form.responsable.errors %}{{ form.responsable.errors }}{% endif %}</span>
+            </label>
+                {{ form.responsable }}
+            <span id="helpBlock" class="help-block">{{ form.responsable.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.fecha_inicio.label }}
+              <span class="error">{% if form.fecha_inicio.errors %}{{ form.fecha_inicio.errors }}{% endif %}</span>
+            </label>
+                {{ form.fecha_inicio }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_inicio.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.fecha_fin.label }}
+              <span class="error">{% if form.fecha_fin.errors %}{{ form.fecha_fin.errors }}{% endif %}</span>
+            </label>
+                {{ form.fecha_fin }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_fin.help_text }}</span>
+          </div>              
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.avance.label }}
+              <span class="error">{% if form.avance.errors %}{{ form.avance.errors }}{% endif %}</span>
+            </label>
+                {{ form.avance }}
+            <span id="helpBlock" class="help-block">{{ form.avance.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.comentario.label }}
+              <span class="error">{% if form.comentario.errors %}{{ form.comentario.errors }}{% endif %}</span>
+            </label>
+                {{ form.comentario }}
+            <span id="helpBlock" class="help-block">{{ form.comentario.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <center>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </center>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  <div id="form_properties">
+    <div class="property">
+        <h4>Anexos técnicos
+          <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+          <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+        </h4>
+        <div hidden="hidden">
+          {% for anexotecnico in anexostecnicos %}
+            <div class="input-group">
+
+              <input type="text" class="form-control" readonly="readonly" value="{{anexotecnico}}" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">
+                <a onClick="editarAnexotecnico(0, {{anexotecnico.id}})">
+                  <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                </a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+
+    <div class="property">
+        <h4>Contratos
+          <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+          <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+        </h4>
+        <div hidden="hidden">
+          {% for contrato in contratos %}
+            <div class="input-group">
+
+              <input type="text" class="form-control" readonly="readonly" value="{{contrato}}" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">
+                <a onClick="editarContrato(0, {{contrato.id}})">
+                  <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                </a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+
+    <div class="property">
+        <h4>Convenios 
+          <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+          <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+        </h4>
+        <div hidden="hidden">
+          {% for convenio in convenios %}
+            <div class="input-group">
+
+              <input type="text" class="form-control" readonly="readonly" value="{{convenio}}" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">
+                <a onClick="editarConvenio(0, {{convenio.id}})">
+                  <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                </a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+    
+    <div class="property">
+        <h4>Entregables
+          <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+          <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+        </h4>
+        <div hidden="hidden">
+          {% for entregable in entregables %}
+            <div class="input-group">
+
+              <input type="text" class="form-control" readonly="readonly" value="{{entregable}}" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">
+                <a class="entregables" onClick="editarEntregable(0, {{ entregable.id}});">
+                  <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                </a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+
+    <div class="property">
+        <h4>Propuestas
+          <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+          <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+        </h4>
+        <div hidden="hidden">
+          {% for propuesta in propuestas %}
+            <div class="input-group">
+
+              <input type="text" class="form-control" readonly="readonly" value="{{propuesta}}" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">
+                <a class="entregables" onClick="editarPropuesta(0, {{ propuesta.id}});">
+                  <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                </a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+
+    <div class="property">
+        <h4>Pagos
+          <img class="mostrar" title="mostrar" src="{% static "icons/mostrar.png" %}"> 
+          <img class="ocultar" title="ocultar" hidden="hidden" src="{% static "icons/ocultar.png" %}">
+        </h4>
+        <div hidden="hidden">
+          {% for pago in pagos %}
+            <div class="input-group">
+
+              <input type="text" class="form-control" readonly="readonly" value="{{pago}}" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">
+                <a class="entregables" onClick="editarPago(0, {{ pago.id}});">
+                  <img class="editar" title="editar" src="{% static "icons/editar.png" %}">
+                </a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+  {% endblock %}

@@ -1,0 +1,134 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+  {% block extrascript %}
+  {% endblock %}
+  {% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/formularios.css" %}" media="screen">
+  {% endblock %}
+
+  {% block breadcrumbs %}
+    <ol class="breadcrumb" style="margin-top:-20px">
+      <li><a href="{% url 'administracion:index' %}">Inicio</a> </li>
+      <li><a href="{% url 'administracion:detalle-pagos' %}">Detalle de pagos</a></li>
+      <li class="active">Crear Detalle Pago</li>
+    </ol>
+  {% endblock %}
+
+  {% block contenido %}    
+    <form class="agregar_form" action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+      <div class="form-group">
+        {% if mensaje %}
+          <p class="error_mensaje">{{ mensaje }}</p>
+        {% endif %}
+      </div>
+      <div class="contenido_form">
+        <div class="form-group">
+          <label  for="exampleInputEmail1">
+            {{ form.entregable.label }}
+            <span class="error">{{ form.entregable.errors }}</span>
+          </label> 
+                {{ form.entregable }}
+            <span id="helpBlock" class="help-block">{{ form.entregable.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.pago.label }}
+              <span class="error">{% if form.pago.errors %}{{ form.pago.errors }}{% endif %}</span>
+            </label>
+                {{ form.pago }}
+            <span id="helpBlock" class="help-block">{{ form.pago.help_text }}</span>        
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.detalle_pago.label }}
+              <span class="error">{% if form.detalle_pago.errors %}{{ form.detalle_pago.errors }}{% endif %}</span>
+            </label>
+                {{ form.detalle_pago }}
+            <span id="helpBlock" class="help-block">{{ form.detalle_pago.help_text }}</span>        
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.nombre_pago_origen.label }}
+              <span class="error">{% if form.nombre_pago_origen.errors %}{{ form.nombre_pago_origen.errors }}{% endif %}</span>
+            </label>
+                {{ form.nombre_pago_origen }}
+            <span id="helpBlock" class="help-block">{{ form.nombre_pago_origen.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.siglas_pago_origen.label }}
+              <span class="error">{% if form.siglas_pago_origen.errors %}{{ form.siglas_pago_origen.errors }}{% endif %}</span>
+            </label>
+                {{ form.siglas_pago_origen }}
+            <span id="helpBlock" class="help-block">{{ form.siglas_pago_origen.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.nombre_pago_destino.label }}
+              <span class="error">{% if form.nombre_pago_destino.errors %}{{ form.nombre_pago_destino.errors }}{% endif %}</span>
+            </label>
+                {{ form.nombre_pago_destino }}
+            <span id="helpBlock" class="help-block">{{ form.nombre_pago_destino.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.siglas_pago_destino.label }}
+              <span class="error">{% if form.siglas_pago_destino.errors %}{{ form.siglas_pago_destino.errors }}{% endif %}</span>
+            </label>
+                {{ form.siglas_pago_destino }}
+            <span id="helpBlock" class="help-block">{{ form.siglas_pago_destino.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.fecha_pago.label }}
+              <span class="error">{% if form.fecha_pago.errors %}{{ form.fecha_pago.errors }}{% endif %}</span>
+            </label>
+                {{ form.fecha_pago }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_pago.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.monto.label }}
+              <span class="error">{% if form.monto.errors %}{{ form.monto.errors }}{% endif %}</span>
+            </label>
+                {{ form.monto }}
+            <span id="helpBlock" class="help-block">{{ form.monto.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.porcentaje_de_pago.label }}
+              <span class="error">{% if form.porcentaje_de_pago.errors %}{{ form.porcentaje_de_pago.errors }}{% endif %}</span>
+            </label>
+                {{ form.porcentaje_de_pago }}
+            <span id="helpBlock" class="help-block">{{ form.porcentaje_de_pago.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.tipo_de_pago.label }}
+              <span class="error">{% if form.tipo_de_pago.errors %}{{ form.tipo_de_pago.errors }}{% endif %}</span>
+            </label>
+                {{ form.tipo_de_pago }}
+            <span id="helpBlock" class="help-block">{{ form.tipo_de_pago.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.documento_deposito.label }}
+              <span class="error">{% if form.documento_deposito.errors %}{{ form.documento_deposito.errors }}{% endif %}</span>
+            </label>
+                {{ form.documento_deposito }}
+            <span id="helpBlock" class="help-block">{{ form.documento_deposito.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.responsable.label }}
+              <span class="error">{% if form.responsable.errors %}{{ form.responsable.errors }}{% endif %}</span>
+            </label>
+                {{ form.responsable }}
+            <span id="helpBlock" class="help-block">{{ form.responsable.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.pagado.label }}
+              <span class="error">{% if form.pagado.errors %}{{ form.pagado.errors }}{% endif %}</span>
+            </label>
+                {{ form.pagado }}
+            <span id="helpBlock" class="help-block">{{ form.pagado.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <center>
+              <button type="submit" class="btn btn-primary">Agregar</button>
+            </center>
+          </div>
+      </div>
+    </form>
+    {% endblock %}

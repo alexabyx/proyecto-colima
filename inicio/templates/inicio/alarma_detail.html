@@ -1,0 +1,16 @@
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Creación: {{ alarma.fecha_creacion }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{ alarma.emisor.get_full_name|truncatewords:3 }} comentó: </p>
+        <p>{{ alarma.mensaje }}</p>
+        <p>Estatus: {{ alarma.status_status }}</p>
+        <p>Vencimiento: {{ alarma.fecha_vencimiento }}</p>
+      </div>
+      <div class="modal-footer">
+        <center>
+          <button type="button" class="btn btn-primary" onClick="$.fancybox.close();">Close</button>
+        </center>
+      </div>
+    </div><!-- /.modal-content -->

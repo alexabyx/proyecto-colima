@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load staticfiles %}
+<style type="text/css">
+      span.error{
+        color: red;
+      }
+      p.error_mensaje{
+        color: red;
+        text-align: center;
+      }
+</style>
+<div id="div_formulario">
+  <form id="formulario" class="agregar_form_1" action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    {% if mensaje %}
+    <div class="form-group">
+        <p class="error_mensaje">{{ mensaje }}</p>
+    </div>
+    {% endif %}
+      <div class="contenido_form">
+        <div class="form-group">
+          <label  for="exampleInputEmail1">
+            {{ form.proyecto.label }}
+            <span class="error">{% if form.proyecto.errors %}{{ form.proyecto.errors }}{% endif %}</span>
+          </label> 
+                {{ form.proyecto }}
+            <span id="helpBlock" class="help-block">{{ form.proyecto.help_text }}</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.monto_total.label }}
+              <span class="error">{% if form.monto_total.errors %}{{ form.monto_total.errors }}{% endif %}</span>
+            </label>
+                {{ form.monto_total }}
+            <span id="helpBlock" class="help-block">{{ form.monto_total.help_text }}</span>        
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">{{ form.fecha_pago.label }}
+              <span class="error">{% if form.fecha_pago.errors %}{{ form.fecha_pago.errors }}{% endif %}</span>
+            </label>
+                {{ form.fecha_pago }}
+            <span id="helpBlock" class="help-block">{{ form.fecha_pago.help_text }}</span>
+          </div>
+          <input type="button" value="Aceptar" onClick="confirmarEdicion();">
+          <input type="button" value="Cancelar" onClick="$.fancybox.close();" >
+        </div>
+      </form>
+</div>
+
+<div id="div_confirmacion" hidden="hidden">
+  <p>Esta seguro de querer guardar los cambios.</p>
+  <input type="button" onClick="cerrarConfirmarEdicion();" value="Cancelar" >
+  <input type="button" onClick="editarPago(1, {{ id }});" value="Aceptar">
+</div>

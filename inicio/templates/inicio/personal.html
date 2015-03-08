@@ -1,0 +1,153 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Empleados{% endblock %}
+	{% block extrascript %}
+	<script type="text/javascript" src="{% static "js/en_historico.js" %}"></script>
+    <script>
+     function detalle(personal_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_personal/'+personal_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+						'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+					   });
+		});   	
+     }
+
+     function aviso(personal_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar este empleado?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(personal_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(personal_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': personal_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_personal/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+								'openEffect': 'elastic',
+								'closeEffect': 'elastic',
+								'afterClose':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+								'openEffect': 'elastic',
+								'closeEffect': 'elastic',
+								'afterClose':function(){ window.location.reload();},
+							});
+     			});
+
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Personal</li>
+	</ol>
+	{% endblock %}
+
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Listado de empleados
+	  <div class="agregar">
+	  	{% if not historico %}
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-personal' %}">
+	  		<img src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  	</a>&nbsp;
+	  	{% endif %}
+		<a title="Ver historico" href="{% url 'administracion:personal' %}?historico={% if historico %}{% else %}1{% endif %}">
+		     <img  src="{% static "icons/historico.png" %}">{% if historico %}Ver activos{% else %}Ver historico{% endif %}
+		</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nombre Competo</th>
+					<th>Sexo</th>
+					<th>Fecha de ingreso</th>
+					<th>Puesto</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for personal1 in personal %}
+			<tr>
+				<td>{{ personal1.nombre }} {{ personal1.apellido_paterno }} {{ personal1.apellido_materno }}</td>
+				<td>{{ personal1.genero_genero }}</td>
+				<td>{{ personal1.fecha_ingreso }}</td>
+				<td>{{ personal1.puesto }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{personal1.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp;
+					{% if not personal1.en_historico %}
+					<a href="{% url 'administracion:editar-personal' personal1.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp;
+					<a onClick="aviso({{ personal1.id }});" title="Eliminar">
+						<img src="{% static "icons/eliminar.png" %}"> 
+					</a>&nbsp;
+					<a onClick="aviso_historico('personal', {{ personal1.id }}, 2);" title="Histórico">
+					    <img src="{% static "icons/enviar_historico.png" %}">
+					</a>&nbsp;
+					<a onClick="aviso_historico('personal', {{ personal1.id }}, 3);" title="Carcelar">
+					    <img src="{% static "icons/cancelar.png" %}">
+					</a>
+					{% endif %}
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if personal.has_previous %}
+	           <li><a href="?page={{ personal.previous_page_number }}{% if historico %}&historico=1{% endif %}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ personal.number }} de {{ personal.paginator.num_pages }}
+		    {% if personal.has_next %}
+	    		<li><a href="?page={{ personal.next_page_number }}{% if historico %}&historico=1{% endif %}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

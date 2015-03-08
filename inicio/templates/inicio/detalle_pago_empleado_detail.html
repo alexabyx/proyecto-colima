@@ -1,0 +1,38 @@
+<style>
+.input-group-addon{
+  width:50%;
+}
+</style>
+
+<div class="modal-header">
+	<h4 class="modal-title">Detalle Documento Responsiva</h4>
+</div>
+
+<div class="modal-body">
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Personal</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.personal}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Responsable</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.responsable}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Documento de Pago</span>
+	  {% if object.archivo_documento_de_pago %}
+	  	<a target="_blank" href="{{object.archivo_documento_de_pago_liga}}">
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.archivo_documento_de_pago}}" aria-describedby="basic-addon1"><br>
+	  	</a>
+	  {% else %}
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.archivo_documento_de_pago}}" aria-describedby="basic-addon1"><br>
+	  {% endif%} 
+	</div>
+</div>
+
+<div class="modal-footer">
+	<center>
+		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="javascript: $.fancybox.close()">Aceptar</button>
+	</center>
+</div>

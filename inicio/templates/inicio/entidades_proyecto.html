@@ -1,0 +1,92 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Entidades{% endblock %}
+	{% block extrascript %}
+	<script type="text/javascript" src="{% static "js/en_historico.js" %}"></script>
+    <script>
+     function detalle(entidad_proyecto_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_entidad_proyecto/'+entidad_proyecto_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+					   });
+		});   	
+     }
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Entidades-proyecto</li>
+	</ol>
+	{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Listado relaciones de entidad-proyecto
+	  <div class="agregar">
+	  	{% if not historico %}
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-entidad-proyecto' %}">
+	  		<img src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  	</a>&nbsp;
+	  	{% endif %}
+	  	<a title="Ver historico" href="{% url 'administracion:entidades-proyecto' %}?historico={% if historico %}{% else %}1{% endif %}">
+		     <img  src="{% static "icons/historico.png" %}">{% if historico %}Ver activos{% else %}Ver historico{% endif %}
+		</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Entidad</th>
+					<th>Proyecto</th>
+					<th>Porcentaje</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for entidad_proyecto in entidades_proyecto %}
+			<tr>
+				<td>{{ entidad_proyecto.entidad }} </td>
+				<td>{{ entidad_proyecto.proyecto }}</td>
+				<td>{{ entidad_proyecto.porcentaje_porcentaje }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{entidad_proyecto.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp;
+					{% if not entidad_proyecto.en_historico %}
+					<a href="{% url 'administracion:editar-entidad-proyecto' entidad_proyecto.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>
+					<a onClick="aviso_historico('entidad_proyecto', {{ entidad_proyecto.id }}, 2);" title="Histórico">
+					     <img src="{% static "icons/enviar_historico.png" %}">
+					</a>&nbsp;
+					<a onClick="aviso_historico('entidad_proyecto', {{ entidad_proyecto.id }}, 3);" title="Carcelar">
+					     <img src="{% static "icons/cancelar.png" %}">
+					</a>
+					{% endif %}
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if entidades_proyecto.has_previous %}
+	           <li><a href="?page={{ entidades_proyecto.previous_page_number }}{% if historico %}&historico=1{% endif %}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ entidades_proyecto.number }} de {{ entidades_proyecto.paginator.num_pages }}
+		    {% if entidades_proyecto.has_next %}
+	    		<li><a href="?page={{ entidades_proyecto.next_page_number }}{% if historico %}&historico=1{% endif %}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}		

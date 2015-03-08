@@ -1,0 +1,155 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Proyectos{% endblock %}
+	{% block extrascript %}
+	<script type="text/javascript" src="{% static "js/en_historico.js" %}"></script>
+	<script>
+	function detalle(proyecto_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_proyecto/'+proyecto_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+						'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+					   });
+		});   	
+     }
+
+     function aviso(proyecto_id){
+     	$.fancybox.showLoading();
+     	var data = {mensaje: "¿Está seguro de querer eliminar este proyecto?"}
+     	$.get('/administracion/modal_aviso/', data, function(response){
+     		$.fancybox({'content': response,
+     					'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+     					'afterShow':function(){
+     						$('#aceptar').click(function(){
+     								$(this).attr("disabled", "disabled");
+									//$.fancybox.close();
+									eliminar(proyecto_id);
+     						});
+
+     						$("#cancelar").click(function(){
+									$.fancybox.close();
+     						});
+     					},
+     					});
+
+     	});
+     }
+
+     function eliminar(proyecto_id){
+     	$.fancybox.showLoading();
+
+     	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+     	var data = {'pk': proyecto_id, 'csrfmiddlewaretoken': csrfmiddlewaretoken}
+
+     	$.post('/administracion/eliminar_proyecto/', data, function(response){
+     		if(response.error){
+     			$.get('/administracion/modal_error/', {}, function(_response){ 
+					$.fancybox({'content': _response,
+							//'afterShow': function(){ $('#fancybox-content').css("width", $('#fancybox-outer').width());},
+							'afterClose':function(){ window.location.reload();},
+								});
+     			});
+     		}
+     		else{
+     			$.fancybox.showLoading();
+     			$.get('/administracion/modal_ok/', {}, function(_response){
+					$.fancybox({'content': _response,
+							//'afterShow': function(){ $('#fancybox-content').css("width", $('#fancybox-outer').width());},
+							'afterClose':function(){ window.location.reload();},
+							});
+     			});
+
+     		}
+
+     	});
+     } 
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Proyectos</li>
+	</ol>
+	{% endblock %}
+
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Listado de proyectos
+	  <div class="agregar">
+	  	{% if not historico %}
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-proyecto' %}">
+	  		<img  src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  		<!-- <button type="button" class="btn btn-default agregar" />Agregar nuevo</button>-->
+	  	</a>&nbsp;
+	  	{% endif %}
+	   	<a title="Ver historico" href="{% url 'administracion:proyectos' %}?historico={% if historico %}{% else %}1{% endif %}">
+	  		<img  src="{% static "icons/historico.png" %}">{% if historico %}Ver activos{% else %}Ver historico{% endif %}
+	  		<!-- <button type="button" class="btn btn-default agregar" />Agregar nuevo</button>-->
+	  	</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Fecha de inicio</th>
+					<th>Avance</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for proyecto in proyectos %}
+			<tr>
+				<td>
+					{{ proyecto.nombre }}
+				</td>
+				<td>{{ proyecto.fecha_inicio }}</td>
+				<td>{% if proyecto.avance %} {{ proyecto.avance }}% {% else %}0%{% endif %}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{proyecto.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp;
+					{% if not proyecto.en_historico %}
+					<a href="{% url 'administracion:editar-proyecto' proyecto.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp;
+					<a onClick="aviso({{ proyecto.id }});" title="Eliminar">
+						<img src="{% static "icons/eliminar.png" %}"> 
+					</a>
+					<a onClick="aviso_historico('proyecto',{{ proyecto.id }}, 2);" title="Histórico">&nbsp;
+						<img src="{% static "icons/enviar_historico.png" %}">
+					</a>
+					<a onClick="aviso_historico('proyecto', {{ proyecto.id }}, 3);" title="Carcelar">&nbsp;
+						<img src="{% static "icons/cancelar.png" %}">
+					</a>
+					{% endif %}
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if proyectos.has_previous %}
+	           <li><a href="?page={{ proyectos.previous_page_number }}{% if historico %}&historico=1{% endif %}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ proyectos.number }} de {{ proyectos.paginator.num_pages }}
+		    {% if proyectos.has_next %}
+	    		<li><a href="?page={{ proyectos.next_page_number }}{% if historico %}&historico=1{% endif %}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	

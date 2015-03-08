@@ -1,0 +1,192 @@
+{% extends "inicio/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+	{% block script %}
+	<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="{% static "fancybox/lib/jquery.mousewheel-3.0.6.pack.js" %}"></script>
+
+	<!-- Add fancyBox -->
+	<link rel="stylesheet" href="{% static "fancybox/source/jquery.fancybox.css" %}?v=2.1.5" type="text/css" media="screen" />
+	<script type="text/javascript" src="{% static "fancybox/source/jquery.fancybox.pack.js" %}?v=2.1.5"></script>
+
+	<!-- Optionally add helpers - button, thumbnail and/or media -->
+	<link rel="stylesheet" href="{% static "fancybox/source/helpers/jquery.fancybox-buttons.css" %}?v=1.0.5" type="text/css" media="screen" />
+	<script type="text/javascript" src="{% static "fancybox/source/helpers/jquery.fancybox-buttons.js" %}?v=1.0.5"></script>
+	<script type="text/javascript" src="{% static "fancybox/source/helpers/jquery.fancybox-media.js" %}?v=1.0.6"></script>
+
+	<link rel="stylesheet" href="{% static "fancybox/source/helpers/jquery.fancybox-thumbs.css" %}?v=1.0.7" type="text/css" media="screen" />
+	<script type="text/javascript" src="{% static "fancybox/source/helpers/jquery.fancybox-thumbs.js" %}?v=1.0.7"></script>
+	<script type="text/javascript" src="{% static "js/alarmas.js" %}"></script>
+	{% endblock %}
+
+	{% block style %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/header.css" %}" media="screen">
+	{% endblock %}
+
+	{% block titulo %}Oficina de Administración de Proyectos{% endblock %}
+
+	{% block extrascript %}
+
+    {% endblock %}
+    
+    {% block extrastyle %}
+
+    {% endblock %}
+
+    {% block header %}
+  	<header>
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+				<a class="navbar-brand" href="{% url 'administracion:index' %}">
+				Sistema de Oficina de Administración de Proyectos
+				</a>
+	            {% if user.is_authenticated %}
+	            	<p class="navbar-text navbar-right bienvenida">Bienvenido/a, {{ user.first_name }} {{ user.last_name }}. <a class="navbar-link" href="{% url 'administracion:logout-web' %}">Cerrar sesión</a> </p>
+                {% else %}
+                	<p class="navbar-text navbar-right"> </p>
+	            {% endif %}
+		    </div>
+		</nav>
+  	</header>
+  	{% endblock %}
+
+  	{% block breadcrumbs %}
+  	{% endblock %}
+	
+	{% block menus %}
+  	<ul class="nav nav-pills">
+	  <li role="presentation" class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+	       Proyectos<span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu" role="menu">
+			<li>
+				<a href="{% url 'administracion:proyectos' %}">
+					Proyectos
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:anexostecnicos' %}">
+					Anexos Técnicos
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:convenios'%}">
+					Convenios
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:contratos' %}">
+					Contratos
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:propuestas' %}">
+					Propuestas
+				</a>
+			</li>
+
+			<li>
+				<a href="{% url 'administracion:entregables' %}">
+					Entregables
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:detalle-entregables' %}">
+					Detalles Entregables
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:doc-generales' %}">
+					Documentos Generales
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:detalle-doc-generales' %}">
+					Detalle de Documentos Generales
+				</a>
+			</li>
+
+	    </ul>
+	  </li>
+
+
+	  <li role="presentation" class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+	       Personas<span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu" role="menu">
+			<li>
+				<a href="{% url 'administracion:personal' %}">
+					Personal
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:detalles-pago-empleado' %}">
+					Detalle de Pagos a Empleados
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:detalles-doc-responsiva' %}">
+					Detalle de Documentos Responsiva
+				</a>
+			</li>
+
+			<li>
+				<a href="{% url 'administracion:clientes' %}">
+					Clientes
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:entidades' %}">
+					Entidades
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:entidades-proyecto' %}">
+					Entidades-proyecto
+				</a>
+			</li>
+	    </ul>
+	  </li>
+
+	  <li role="presentation" class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+	       Finanzas<span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu" role="menu">
+			<li>
+				<a href="{% url 'administracion:facturas' %}">
+					Facturas
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:detalle-facturas' %}">
+					Detalle Facturas
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:pagos' %}">
+					Pagos
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:detalle-pagos' %}">
+					Detalle Pagos
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'administracion:homologacion' %}">Homologación de docs</a>
+			</li>
+		</ul>
+	  </li>
+		<button type="button" class="btn btn-danger alarma" onClick="crearAlarma(0);">Crear Alarma</button>	  
+	</ul>
+  	{% endblock %}
+
+  	{% block contenido %}
+	{% endblock %}
+
+
+

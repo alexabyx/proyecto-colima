@@ -1,0 +1,36 @@
+{% load i18n %}
+{% load staticfiles %}
+<style>
+.input-group-addon{
+  width:50%;
+}
+</style>
+
+<div class="modal-header">
+	<h4 class="modal-title">Pago</h4>
+</div>
+
+<div class="modal-body">
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Proyecto</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.proyecto}}" aria-describedby="basic-addon1"><br>
+	</div>
+
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Monto Total</span>
+	  			
+	  <input type="text" class="form-control" readonly="readonly" value="${%if object.monto_total %}{{ object.monto_total }}{% else%}0.00{% endif %}" aria-describedby="basic-addon1"><br>
+	</div>
+	<div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">Fecha de pago</span>
+	  <input type="text" class="form-control" readonly="readonly" value="{{object.fecha_pago}}" aria-describedby="basic-addon1"><br>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<center>
+		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="javascript: $.fancybox.close()">
+			Aceptar
+		</button>
+	</center>
+</div>

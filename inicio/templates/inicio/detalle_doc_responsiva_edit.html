@@ -1,0 +1,47 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+  {% block extrascript %}
+  {% endblock %}
+  {% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/formularios.css" %}" media="screen">
+  {% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb" style="margin-top:-20px">
+  <li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+  <li><a href="{% url 'administracion:detalles-doc-responsiva' %}">Detalles de Doc. de responsiva</a></li>
+  <li class="active">Editar detalle de doc. de responsiva</li>
+</ol>
+{% endblock %}
+  {% block contenido %}
+    <form class="agregar_form" action="." method="POST" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="form-group">
+          {% if mensaje %}
+          <p class="error_mensaje">{{ mensaje }}</p>
+          {% endif %}
+        </div>
+
+      <div class="contenido_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">{{ form.personal.label }}<span class="error">{{ form.personal.errors }}</span></label> 
+          {{ form.personal }}
+          <span id="helpBlock" class="help-block">{{ form.personal.help_text }}</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="exampleInputFile">{{ form.archivo_documento_responsiva.label }}<span class="error">{{ form.archivo_documento_responsiva.errors }}</span></label>
+          {% if detalle_doc_responsiva.archivo_documento_responsiva %}
+            <a target="_blank" href="{{detalle_doc_responsiva.archivo_documento_responsiva_liga }}">Ver actual</a>
+          {% endif %}
+
+          {{ form.archivo_documento_responsiva }}
+          <span id="helpBlock" class="help-block">{{ form.archivo_documento_responsiva.help_text }}</span>
+        </div>
+        <div class="form-group">
+          <center>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </center>
+        </div>
+      </div>
+    </form>  
+  {% endblock %}

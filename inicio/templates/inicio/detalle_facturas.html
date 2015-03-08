@@ -1,0 +1,94 @@
+{% extends "inicio/base_colima.html" %}
+{% load i18n %}
+{% load staticfiles %}
+	{% block titulo %}Facturas{% endblock %}
+	{% block extrascript %}
+	<script type="text/javascript" src="{% static "js/en_historico.js" %}"></script>
+    <script>
+     function detalle(detalle_factura_id){
+     	$.fancybox.showLoading();
+		$.get('/administracion/detalle_detalle_factura/'+detalle_factura_id+'/', {}, function(data){ 
+			$.fancybox({'content': data,
+     					'openEffect': 'elastic',
+						'closeEffect': 'elastic',
+					   });
+		});   	
+     }
+    </script>
+    {% endblock %}
+
+    {% block extrastyle %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/list_views.css"%}" media="screen">
+    {% endblock %}
+	{% block breadcrumbs %}
+	<ol class="breadcrumb" style="margin-top:-20px">
+		<li><a href="{% url 'administracion:index' %}">Inicio</a></li>
+		<li class="active">Detalles de facturas</li>
+	</ol>
+	{% endblock %}
+    {% block contenido %}
+	<div class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  	  	Listado de detalles de facturas
+	  <div class="agregar">
+	  	{% if not historico %}
+	  	<a title="Agregar nuevo" href="{% url 'administracion:crear-detalle-factura' %}">
+	  		<img src="{% static "icons/agregar.png" %}">Agregar nuevo
+	  	</a>&nbsp;
+	  	{% endif %}
+	  	<a title="Ver historico" href="{% url 'administracion:detalle-facturas' %}?historico={% if historico %}{% else %}1{% endif %}">
+     		<img  src="{% static "icons/historico.png" %}">{% if historico %}Ver activos{% else %}Ver historico{% endif %}
+		</a>
+	  </div>
+	  </div>
+
+	  <!-- Table -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Factura</th>
+					<th>Cantidad</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			{% for detalle in detalle_facturas %}
+			<tr>
+				<td>{{ detalle.factura }}</td>
+				<td>{{ detalle.cantidad }}</td>
+				<td>
+					{% csrf_token %}
+					<a onClick="detalle({{detalle.id}});" title="Consultar">
+						<img src="{% static "icons/consultar.png" %}">
+					</a>&nbsp;
+					{% if not detalle.en_historico %}
+					<a href="{% url 'administracion:editar-detalle-factura' detalle.id %}" title="Editar" >
+						<img src="{% static "icons/editar.png" %}"> 
+					</a>&nbsp;
+					<a onClick="aviso_historico('detalle_factura',{{ detalle.id }}, 2);" title="Histórico">
+					     <img src="{% static "icons/enviar_historico.png" %}">
+					</a>&nbsp;
+					<a onClick="aviso_historico('detalle_factura',{{ detalle.id }}, 3);" title="Carcelar">
+					     <img src="{% static "icons/cancelar.png" %}">
+					</a>
+					{% endif %}
+
+
+			</tr>
+			{% endfor %}			
+		</table>
+	</div>	
+	<div>
+		<nav>
+		  <ul class="pager">
+		    {% if detalle_facturas.has_previous %}
+	           <li><a href="?page={{ detalle_facturas.previous_page_number }}{% if historico %}&historico=1{% endif %}">Anterior</a></li> 
+		    {% endif %}                                    
+			Página {{ detalle_facturas.number }} de {{ detalle_facturas.paginator.num_pages }}
+		    {% if detalle_facturas.has_next %}
+	    		<li><a href="?page={{ detalle_facturas.next_page_number }}{% if historico %}&historico=1{% endif %}">Siguiente</a></li>
+		    {% endif %}
+		  </ul>
+		</nav>	
+	</div>
+	{% endblock %}	
